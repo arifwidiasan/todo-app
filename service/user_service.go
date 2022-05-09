@@ -3,33 +3,26 @@ package service
 import (
 	"net/http"
 
-	"github.com/arifwidiasan/todo-app/config"
-	"github.com/arifwidiasan/todo-app/domain"
 	"github.com/arifwidiasan/todo-app/helper"
 	"github.com/arifwidiasan/todo-app/model"
 )
-
-type svcUser struct {
-	c    config.Config
-	repo domain.AdapterRepository
-}
 
 func (s *svcUser) CreateUserService(user model.User) error {
 	return s.repo.CreateUsers(user)
 }
 
-func (s *svcUser) GetUserByID(id int) (model.User, error) {
-	return s.repo.GetOneByID(id)
+func (s *svcUser) GetUserByIDService(id int) (model.User, error) {
+	return s.repo.GetUserByID(id)
 }
 
-func (s *svcUser) GetUserByUsername(username string) (model.User, error) {
-	return s.repo.GetOneByUsername(username)
+func (s *svcUser) GetUserByUsernameService(username string) (model.User, error) {
+	return s.repo.GetUserByUsername(username)
 }
 
 func (s *svcUser) LoginUser(username, password string) (string, int) {
-	user, _ := s.repo.GetOneByUsername(username)
+	user, _ := s.repo.GetUserByUsername(username)
 
-	if (user.User_pass != password) || (user == model.User{}) {
+	if user.User_pass != password {
 		return "", http.StatusUnauthorized
 	}
 
@@ -39,11 +32,4 @@ func (s *svcUser) LoginUser(username, password string) (string, int) {
 	}
 
 	return token, http.StatusOK
-}
-
-func NewServiceUser(repo domain.AdapterRepository, c config.Config) domain.AdapterService {
-	return &svcUser{
-		repo: repo,
-		c:    c,
-	}
 }

@@ -40,6 +40,7 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 	apiUser.POST("/login", cont.LoginUserController)
 	apiUser.POST("/register", cont.CreateUserController)
 	apiUser.GET("/:username", cont.GetUserController, middleware.JWT([]byte(conf.JWT_KEY)))
+	apiUser.POST("/:username/activities", cont.CreateActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
 }
 
 type Datas struct {
@@ -48,12 +49,24 @@ type Datas struct {
 func (d *Datas) CreateUsers(user model.User) error {
 	panic("impl")
 }
-func (d *Datas) GetOneByUsername(username string) (user model.User, err error) {
+func (d *Datas) GetUserByUsername(username string) (user model.User, err error) {
 	panic("impl")
 }
-func (d *Datas) GetOneByID(id int) (user model.User, err error) {
+func (d *Datas) GetUserByID(id int) (user model.User, err error) {
 	panic("impl")
 }
+
+func (d *Datas) CreateActivity(activity model.Activity) error {
+	panic("impl")
+}
+func (d *Datas) GetLatestActivity() (activity model.Activity, err error) {
+	panic("impl")
+}
+
+func (d *Datas) CreateAccess(access model.Access) error {
+	panic("impl")
+}
+
 func NewData() domain.AdapterRepository {
 	return &Datas{}
 }

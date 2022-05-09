@@ -5,9 +5,10 @@ import "gorm.io/gorm"
 type User struct {
 	*gorm.Model
 
-	Username   string `gorm:"uniqueIndex" json:"username"`
-	User_email string `json:"user_email"`
-	User_pass  string `json:"user_pass"`
+	Username   string   `gorm:"uniqueIndex" json:"username"`
+	User_email string   `json:"user_email"`
+	User_pass  string   `json:"user_pass"`
+	Accesses   []Access `gorm:"ForeignKey:UserID" json:"accesses"`
 }
 
 type LoginRequest struct {
