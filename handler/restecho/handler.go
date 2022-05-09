@@ -40,7 +40,11 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 	apiUser.POST("/login", cont.LoginUserController)
 	apiUser.POST("/register", cont.CreateUserController)
 	apiUser.GET("/:username", cont.GetUserController, middleware.JWT([]byte(conf.JWT_KEY)))
-	apiUser.POST("/:username/activities", cont.CreateActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+	apiUser.POST("/:username/activities", cont.CreateActivityController, middleware.JWTWithConfig(
+		middleware.JWTConfig{
+			SigningKey: []byte(conf.JWT_KEY),
+		},
+	))
 }
 
 type Datas struct {

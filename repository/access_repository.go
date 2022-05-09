@@ -9,7 +9,7 @@ import (
 func (r *repositoryMysqlLayer) CreateAccess(access model.Access) error {
 	res := r.DB.Create(&access)
 	if res.RowsAffected < 1 {
-		return fmt.Errorf("error insert")
+		return fmt.Errorf("error insert access")
 	}
 
 	return nil

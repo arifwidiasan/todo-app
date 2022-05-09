@@ -4,6 +4,7 @@ import "github.com/arifwidiasan/todo-app/model"
 
 type AdapterRepository interface {
 	CreateUsers(user model.User) error
+
 	GetUserByUsername(username string) (user model.User, err error)
 	GetUserByID(id int) (user model.User, err error)
 
@@ -14,6 +15,8 @@ type AdapterRepository interface {
 }
 
 type AdapterService interface {
+	CheckAuth(username, usernameToken int) error
+
 	CreateUserService(user model.User) error
 	GetUserByIDService(id int) (model.User, error)
 	GetUserByUsernameService(username string) (model.User, error)
@@ -21,6 +24,7 @@ type AdapterService interface {
 
 	CreateActivityService(activity model.Activity) error
 	GetLatestActivityservice() (model.Activity, error)
+	ReplaceActivityName(user_id int, activity model.Activity) model.Activity
 
-	CreateAccessService(access model.Access) error
+	CreateAccessService(user_id, activity_id uint, access model.Access) error
 }
