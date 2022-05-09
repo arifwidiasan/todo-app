@@ -11,8 +11,10 @@ type AdapterRepository interface {
 	CreateActivity(activity model.Activity) error
 	GetLatestActivity() (activity model.Activity, err error)
 	GetAllActivity(id_user int) []model.Activity
+	GetActivityByName(name string) (activity model.Activity, err error)
 
 	CreateAccess(access model.Access) error
+	CheckAccess(user_id, activity_id uint) (access model.Access, err error)
 }
 
 type AdapterService interface {
@@ -27,6 +29,8 @@ type AdapterService interface {
 	GetLatestActivityService() (model.Activity, error)
 	ReplaceActivityName(user_id int, activity model.Activity) model.Activity
 	GetAllActivityService(username string) []model.Activity
+	GetActivityByNameService(name string) (model.Activity, error)
 
 	CreateAccessService(user_id, activity_id uint, access model.Access) error
+	CheckAcccessService(user_id, activity_id uint) error
 }

@@ -14,7 +14,7 @@ func (ce *EchoController) CreateActivityController(c echo.Context) error {
 	claim := bearer.Claims.(jwt.MapClaims)
 	err := ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
 	if err != nil {
-		return c.JSON(404, map[string]interface{}{
+		return c.JSON(401, map[string]interface{}{
 			"messages": "unauthorized",
 		})
 	}
@@ -54,7 +54,7 @@ func (ce *EchoController) GetAllActivityController(c echo.Context) error {
 	claim := bearer.Claims.(jwt.MapClaims)
 	err := ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
 	if err != nil {
-		return c.JSON(404, map[string]interface{}{
+		return c.JSON(401, map[string]interface{}{
 			"messages": "unauthorized",
 		})
 	}
@@ -64,5 +64,40 @@ func (ce *EchoController) GetAllActivityController(c echo.Context) error {
 	return c.JSON(200, map[string]interface{}{
 		"messages":      "success",
 		"List Activity": activity,
+	})
+}
+
+func (ce *EchoController) GetActivityController(c echo.Context) error {
+	username := c.Param("username")
+	users, _ := ce.svc.GetUserByUsernameService(username)
+
+	bearer := c.Get("user").(*jwt.Token)
+	claim := bearer.Claims.(jwt.MapClaims)
+	err := ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "unauthorized",
+		})
+	}
+
+	name := c.Param("activity_name")
+
+	res, err := ce.svc.GetActivityByNameService(name)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "activity not found",
+		})
+	}
+
+	err = ce.svc.CheckAcccessService(users.ID, res.ID)
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "you dont have access to this activity",
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "success",
+		"activity": res,
 	})
 }

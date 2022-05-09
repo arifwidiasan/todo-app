@@ -25,3 +25,7 @@ func (s *svcUser) ReplaceActivityName(user_id int, activity model.Activity) mode
 
 	return activity
 }
+
+func (s *svcUser) GetActivityByNameService(name string) (model.Activity, error) {
+	return s.repo.GetActivityByName(name)
+}

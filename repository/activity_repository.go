@@ -32,3 +32,12 @@ func (r *repositoryMysqlLayer) GetAllActivity(id_user int) []model.Activity {
 
 	return activity
 }
+
+func (r *repositoryMysqlLayer) GetActivityByName(name string) (activity model.Activity, err error) {
+	res := r.DB.Where("activity_name = ?", name).Find(&activity)
+	if res.RowsAffected < 1 {
+		err = fmt.Errorf("activity not found")
+	}
+
+	return
+}

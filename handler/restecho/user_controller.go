@@ -29,7 +29,7 @@ func (ce *EchoController) GetUserController(c echo.Context) error {
 
 	res, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
-		return c.JSON(500, map[string]interface{}{
+		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
 		})
 	}

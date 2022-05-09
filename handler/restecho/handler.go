@@ -46,6 +46,7 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 			SigningKey: []byte(conf.JWT_KEY),
 		},
 	))
+	apiUser.GET("/:username/activities/:activity_name", cont.GetActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
 }
 
 type Datas struct {
@@ -70,8 +71,14 @@ func (d *Datas) GetLatestActivity() (activity model.Activity, err error) {
 func (d *Datas) GetAllActivity(id_user int) []model.Activity {
 	panic("impl")
 }
+func (d *Datas) GetActivityByName(name string) (activity model.Activity, err error) {
+	panic("impl")
+}
 
 func (d *Datas) CreateAccess(access model.Access) error {
+	panic("impl")
+}
+func (d *Datas) CheckAccess(user_id, activity_id uint) (access model.Access, err error) {
 	panic("impl")
 }
 
