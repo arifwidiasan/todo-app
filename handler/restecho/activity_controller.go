@@ -30,7 +30,7 @@ func (ce *EchoController) CreateActivityController(c echo.Context) error {
 		})
 	}
 
-	latest_activity, _ := ce.svc.GetLatestActivityservice()
+	latest_activity, _ := ce.svc.GetLatestActivityService()
 
 	access := model.Access{}
 	err = ce.svc.CreateAccessService(users.ID, latest_activity.ID, access)
@@ -43,5 +43,26 @@ func (ce *EchoController) CreateActivityController(c echo.Context) error {
 	return c.JSON(201, map[string]interface{}{
 		"messages":      "success",
 		"name activity": activity.Activity_Name,
+	})
+}
+
+func (ce *EchoController) GetAllActivityController(c echo.Context) error {
+	username := c.Param("username")
+	users, _ := ce.svc.GetUserByUsernameService(username)
+
+	bearer := c.Get("user").(*jwt.Token)
+	claim := bearer.Claims.(jwt.MapClaims)
+	err := ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "unauthorized",
+		})
+	}
+
+	activity := ce.svc.GetAllActivityService(username)
+
+	return c.JSON(200, map[string]interface{}{
+		"messages":      "success",
+		"List Activity": activity,
 	})
 }

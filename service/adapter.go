@@ -12,8 +12,8 @@ type svcUser struct {
 	repo domain.AdapterRepository
 }
 
-func (s *svcUser) CheckAuth(username, usernameToken int) error {
-	if username != usernameToken {
+func (s *svcUser) CheckAuth(id, idToken int) error {
+	if id != idToken {
 		return errors.New("error")
 	}
 
