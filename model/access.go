@@ -9,3 +9,8 @@ type Access struct {
 	UserID       uint `json:"user_id"`
 	ActivityID   uint `json:"activity_id"`
 }
+
+type ListAccess struct {
+	Username     string
+	Access_Owner bool
+}

@@ -12,9 +12,15 @@ type AdapterRepository interface {
 	GetLatestActivity() (activity model.Activity, err error)
 	GetAllActivity(id_user int) []model.Activity
 	GetActivityByName(name string) (activity model.Activity, err error)
+	UpdateActivityByID(id int, activity model.Activity) error
+	DeleteActivityByID(id int) error
 
 	CreateAccess(access model.Access) error
 	CheckAccess(user_id, activity_id uint) (access model.Access, err error)
+	CheckAccessOwner(user_id, activity_id uint) (access model.Access, err error)
+	DeleteAllAccess(activity_id int) error
+	GetAccessUserActivity(activity_id int) []model.ListAccess
+	DeleteOneAccess(user_id, activity_id int) error
 }
 
 type AdapterService interface {
@@ -30,7 +36,13 @@ type AdapterService interface {
 	ReplaceActivityName(user_id int, activity model.Activity) model.Activity
 	GetAllActivityService(username string) []model.Activity
 	GetActivityByNameService(name string) (model.Activity, error)
+	UpdateActivityService(id int, activity model.Activity) error
+	DeleteActivityByIDService(id int) error
 
-	CreateAccessService(user_id, activity_id uint, access model.Access) error
+	CreateAccessService(user_id, activity_id uint, owner bool, access model.Access) error
 	CheckAcccessService(user_id, activity_id uint) error
+	CheckAcccessOwnerService(user_id, activity_id uint) error
+	DeleteAllAccessService(activity_id int) error
+	GetAccessUserActivityService(activity_id int) []model.ListAccess
+	DeleteOneAccessService(user_id, activity_id int) error
 }

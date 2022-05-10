@@ -29,3 +29,11 @@ func (s *svcUser) ReplaceActivityName(user_id int, activity model.Activity) mode
 func (s *svcUser) GetActivityByNameService(name string) (model.Activity, error) {
 	return s.repo.GetActivityByName(name)
 }
+
+func (s *svcUser) UpdateActivityService(id int, activity model.Activity) error {
+	return s.repo.UpdateActivityByID(id, activity)
+}
+
+func (s *svcUser) DeleteActivityByIDService(id int) error {
+	return s.repo.DeleteActivityByID(id)
+}

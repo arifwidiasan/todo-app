@@ -41,3 +41,22 @@ func (r *repositoryMysqlLayer) GetActivityByName(name string) (activity model.Ac
 
 	return
 }
+
+func (r *repositoryMysqlLayer) UpdateActivityByID(id int, activity model.Activity) error {
+	res := r.DB.Where("id = ?", id).UpdateColumns(&activity)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error update activity")
+	}
+
+	return nil
+}
+
+func (r *repositoryMysqlLayer) DeleteActivityByID(id int) error {
+	res := r.DB.Unscoped().Delete(&model.Activity{}, id)
+
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error delete")
+	}
+
+	return nil
+}
