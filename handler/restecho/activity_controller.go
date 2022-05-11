@@ -249,3 +249,101 @@ func (ce *EchoController) DeleteActivityController(c echo.Context) error {
 		"messages": "activity deleted",
 	})
 }
+
+func (ce *EchoController) ArchiveActivityController(c echo.Context) error {
+	username := c.Param("username")
+	users, err := ce.svc.GetUserByUsernameService(username)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "username not found",
+		})
+	}
+
+	bearer := c.Get("user").(*jwt.Token)
+	claim := bearer.Claims.(jwt.MapClaims)
+	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "unauthorized",
+		})
+	}
+
+	name := c.Param("activity_name")
+
+	res, err := ce.svc.GetActivityByNameService(name)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "activity not found",
+		})
+	}
+
+	err = ce.svc.CheckAcccessOwnerService(users.ID, res.ID)
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "you dont have access to this activity",
+		})
+	}
+
+	res.Archive()
+
+	err = ce.svc.ArchiveActivityService(int(res.ID), res)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "no id found or no change",
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "activity archived",
+		"activity": res,
+	})
+}
+
+func (ce *EchoController) RestoreActivityController(c echo.Context) error {
+	username := c.Param("username")
+	users, err := ce.svc.GetUserByUsernameService(username)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "username not found",
+		})
+	}
+
+	bearer := c.Get("user").(*jwt.Token)
+	claim := bearer.Claims.(jwt.MapClaims)
+	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "unauthorized",
+		})
+	}
+
+	name := c.Param("activity_name")
+
+	res, err := ce.svc.GetActivityByNameService(name)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "activity not found",
+		})
+	}
+
+	err = ce.svc.CheckAcccessOwnerService(users.ID, res.ID)
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "you dont have access to this activity",
+		})
+	}
+
+	res.Restore()
+
+	err = ce.svc.ArchiveActivityService(int(res.ID), res)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "no id found or no change",
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages": "activity is restored",
+		"activity": res,
+	})
+}

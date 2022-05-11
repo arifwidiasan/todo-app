@@ -42,3 +42,7 @@ func (s *svcUser) UpdateActivityService(id int, activity model.Activity) error {
 func (s *svcUser) DeleteActivityByIDService(id int) error {
 	return s.repo.DeleteActivityByID(id)
 }
+
+func (s *svcUser) ArchiveActivityService(id int, activity model.Activity) error {
+	return s.repo.ArchiveActivityByID(id, activity)
+}

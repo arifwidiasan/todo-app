@@ -15,6 +15,7 @@ type AdapterRepository interface {
 	GetActivityByName(name string) (activity model.Activity, err error)
 	UpdateActivityByID(id int, activity model.Activity) error
 	DeleteActivityByID(id int) error
+	ArchiveActivityByID(id int, activity model.Activity) error
 
 	CreateAccess(access model.Access) error
 	CheckAccess(user_id, activity_id uint) (access model.Access, err error)
@@ -40,6 +41,7 @@ type AdapterService interface {
 	GetActivityByNameService(name string) (model.Activity, error)
 	UpdateActivityService(id int, activity model.Activity) error
 	DeleteActivityByIDService(id int) error
+	ArchiveActivityService(id int, activity model.Activity) error
 
 	CreateAccessService(user_id, activity_id uint, owner bool, access model.Access) error
 	CheckAcccessService(user_id, activity_id uint) error

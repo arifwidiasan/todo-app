@@ -50,7 +50,7 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 		},
 	))
 
-	apiUser.GET("/:username/activities/archive", cont.GetAllArchiveActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+	apiUser.GET("/:username/activities/archives", cont.GetAllArchiveActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 	apiUser.GET("/:username/activities/:activity_name", cont.GetActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
 	apiUser.PUT("/:username/activities/:activity_name", cont.UpdateActivityController, middleware.JWTWithConfig(
@@ -69,6 +69,9 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 	apiUser.DELETE("/:username/activities/:activity_name/manage", cont.DeleteOneAccessController, middleware.JWT([]byte(conf.JWT_KEY)))
 
 	apiUser.DELETE("/:username/activities/:activity_name/remove", cont.DeleteOneNonOwnerAccessController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+	apiUser.PUT("/:username/activities/:activity_name/archive", cont.ArchiveActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+	apiUser.DELETE("/:username/activities/:activity_name/archive", cont.RestoreActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
 }
 
 type Datas struct {
@@ -103,6 +106,9 @@ func (d *Datas) UpdateActivityByID(id int, activity model.Activity) error {
 	panic("impl")
 }
 func (d *Datas) DeleteActivityByID(id int) error {
+	panic("impl")
+}
+func (d *Datas) ArchiveActivityByID(id int, activity model.Activity) error {
 	panic("impl")
 }
 

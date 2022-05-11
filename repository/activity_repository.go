@@ -60,6 +60,15 @@ func (r *repositoryMysqlLayer) UpdateActivityByID(id int, activity model.Activit
 	return nil
 }
 
+func (r *repositoryMysqlLayer) ArchiveActivityByID(id int, activity model.Activity) error {
+	res := r.DB.Where("id = ?", id).Save(&activity)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error update activity")
+	}
+
+	return nil
+}
+
 func (r *repositoryMysqlLayer) DeleteActivityByID(id int) error {
 	res := r.DB.Unscoped().Delete(&model.Activity{}, id)
 
