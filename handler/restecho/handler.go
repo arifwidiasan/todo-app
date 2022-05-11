@@ -72,6 +72,12 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 
 	apiUser.PUT("/:username/activities/:activity_name/archive", cont.ArchiveActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
 	apiUser.DELETE("/:username/activities/:activity_name/archive", cont.RestoreActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+	apiUser.POST("/:username/activities/:activity_name/tasks", cont.CreateTaskController, middleware.JWTWithConfig(
+		middleware.JWTConfig{
+			SigningKey: []byte(conf.JWT_KEY),
+		},
+	))
 }
 
 type Datas struct {
@@ -128,6 +134,10 @@ func (d *Datas) GetAccessUserActivity(activity_id int) []model.ListAccess {
 	panic("impl")
 }
 func (d *Datas) DeleteOneAccess(user_id, activity_id int) error {
+	panic("impl")
+}
+
+func (d *Datas) CreateTask(task model.Task) error {
 	panic("impl")
 }
 

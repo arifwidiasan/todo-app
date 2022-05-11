@@ -23,6 +23,8 @@ type AdapterRepository interface {
 	DeleteAllAccess(activity_id int) error
 	GetAccessUserActivity(activity_id int) []model.ListAccess
 	DeleteOneAccess(user_id, activity_id int) error
+
+	CreateTask(task model.Task) error
 }
 
 type AdapterService interface {
@@ -49,4 +51,6 @@ type AdapterService interface {
 	DeleteAllAccessService(activity_id int) error
 	GetAccessUserActivityService(activity_id int) []model.ListAccess
 	DeleteOneAccessService(user_id, activity_id int) error
+
+	CreateTaskService(activity_id uint, task model.Task) error
 }
