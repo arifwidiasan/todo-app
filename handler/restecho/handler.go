@@ -73,6 +73,7 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 	apiUser.PUT("/:username/activities/:activity_name/archive", cont.ArchiveActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
 	apiUser.DELETE("/:username/activities/:activity_name/archive", cont.RestoreActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
 
+	apiUser.GET("/:username/activities/:activity_name/tasks", cont.GetAllTaskController, middleware.JWT([]byte(conf.JWT_KEY)))
 	apiUser.POST("/:username/activities/:activity_name/tasks", cont.CreateTaskController, middleware.JWTWithConfig(
 		middleware.JWTConfig{
 			SigningKey: []byte(conf.JWT_KEY),
@@ -138,6 +139,12 @@ func (d *Datas) DeleteOneAccess(user_id, activity_id int) error {
 }
 
 func (d *Datas) CreateTask(task model.Task) error {
+	panic("impl")
+}
+func (d *Datas) DeleteAllTask(activity_id int) error {
+	panic("impl")
+}
+func (d *Datas) GetAllTask(activity_id int) []model.Task {
 	panic("impl")
 }
 

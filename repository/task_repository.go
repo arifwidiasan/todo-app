@@ -14,3 +14,18 @@ func (r *repositoryMysqlLayer) CreateTask(task model.Task) error {
 
 	return nil
 }
+
+func (r *repositoryMysqlLayer) DeleteAllTask(activity_id int) error {
+	r.DB.Unscoped().Where("activity_id = ?", activity_id).Delete(&model.Task{})
+
+	return nil
+}
+
+func (r *repositoryMysqlLayer) GetAllTask(activity_id int) []model.Task {
+	task := []model.Task{}
+	r.DB.Model(&model.Task{}).
+		Where("activity_id = ? AND task_done = 0", activity_id).
+		Scan(&task)
+
+	return task
+}

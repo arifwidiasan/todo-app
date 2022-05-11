@@ -41,6 +41,12 @@ func (ce *EchoController) AddAccessActivityUserController(c echo.Context) error 
 
 	newUser := model.User{}
 	c.Bind(&newUser)
+	if newUser.Username == users.Username {
+		return c.JSON(400, map[string]interface{}{
+			"messages": "can't add yourself",
+		})
+	}
+
 	newUser, err = ce.svc.GetUserByUsernameService(newUser.Username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{

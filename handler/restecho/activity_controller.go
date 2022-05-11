@@ -226,17 +226,13 @@ func (ce *EchoController) DeleteActivityController(c echo.Context) error {
 	err = ce.svc.CheckAcccessOwnerService(users.ID, res.ID)
 	if err != nil {
 		return c.JSON(401, map[string]interface{}{
-			"messages": "you dont have access to this activity",
+			"messages": "you dont have access to this activity or not owner",
 		})
 	}
 
 	id := res.ID
-	err = ce.svc.DeleteAllAccessService(int(id))
-	if err != nil {
-		return c.JSON(404, map[string]interface{}{
-			"messages": "no acccess activity found",
-		})
-	}
+	ce.svc.DeleteAllAccessService(int(id))
+	ce.svc.DeleteAllTaskService(int(id))
 
 	err = ce.svc.DeleteActivityByIDService(int(id))
 	if err != nil {
