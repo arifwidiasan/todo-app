@@ -10,3 +10,11 @@ type Task struct {
 	Task_Done     bool   `json:"task_done"`
 	ActivityID    uint   `json:"activity_id"`
 }
+
+func (t *Task) Complete() {
+	t.Task_Done = true
+}
+
+func (t *Task) Undo() {
+	t.Task_Done = false
+}

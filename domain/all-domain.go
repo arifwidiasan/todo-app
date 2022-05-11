@@ -28,6 +28,9 @@ type AdapterRepository interface {
 	DeleteAllTask(activity_id int) error
 	GetAllTask(activity_id int) []model.Task
 	GetTaskByID(id int) (task model.Task, err error)
+	UpdateTaskByID(id int, task model.Task) error
+	DeleteTaskByID(id int) error
+	CompleteTaskByID(id int, task model.Task) error
 }
 
 type AdapterService interface {
@@ -59,4 +62,7 @@ type AdapterService interface {
 	DeleteAllTaskService(activity_id int) error
 	GetAllTaskService(activity_id int) []model.Task
 	GetTaskByIDService(id int) (model.Task, error)
+	UpdateTaskService(id int, task model.Task) error
+	DeleteTaskByIDService(id int) error
+	CompleteTaskService(id int, task model.Task) error
 }

@@ -20,3 +20,15 @@ func (s *svcUser) GetAllTaskService(activity_id int) []model.Task {
 func (s *svcUser) GetTaskByIDService(id int) (model.Task, error) {
 	return s.repo.GetTaskByID(id)
 }
+
+func (s *svcUser) UpdateTaskService(id int, task model.Task) error {
+	return s.repo.UpdateTaskByID(id, task)
+}
+
+func (s *svcUser) DeleteTaskByIDService(id int) error {
+	return s.repo.DeleteTaskByID(id)
+}
+
+func (s *svcUser) CompleteTaskService(id int, task model.Task) error {
+	return s.repo.CompleteTaskByID(id, task)
+}
