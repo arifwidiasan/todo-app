@@ -29,3 +29,12 @@ func (r *repositoryMysqlLayer) GetAllTask(activity_id int) []model.Task {
 
 	return task
 }
+
+func (r *repositoryMysqlLayer) GetTaskByID(id int) (task model.Task, err error) {
+	res := r.DB.Where("id = ?", id).Find(&task)
+	if res.RowsAffected < 1 {
+		err = fmt.Errorf("task not found")
+	}
+
+	return
+}

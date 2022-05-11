@@ -16,3 +16,7 @@ func (s *svcUser) DeleteAllTaskService(activity_id int) error {
 func (s *svcUser) GetAllTaskService(activity_id int) []model.Task {
 	return s.repo.GetAllTask(activity_id)
 }
+
+func (s *svcUser) GetTaskByIDService(id int) (model.Task, error) {
+	return s.repo.GetTaskByID(id)
+}

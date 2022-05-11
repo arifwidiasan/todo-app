@@ -79,6 +79,8 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 			SigningKey: []byte(conf.JWT_KEY),
 		},
 	))
+
+	apiUser.GET("/:username/activities/:activity_name/tasks/:id", cont.GetOneTaskController, middleware.JWT([]byte(conf.JWT_KEY)))
 }
 
 type Datas struct {
@@ -145,6 +147,9 @@ func (d *Datas) DeleteAllTask(activity_id int) error {
 	panic("impl")
 }
 func (d *Datas) GetAllTask(activity_id int) []model.Task {
+	panic("impl")
+}
+func (d *Datas) GetTaskByID(id int) (task model.Task, err error) {
 	panic("impl")
 }
 

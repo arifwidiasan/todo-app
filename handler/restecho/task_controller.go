@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"strconv"
+
 	"github.com/arifwidiasan/todo-app/model"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -91,5 +93,53 @@ func (ce *EchoController) GetAllTaskController(c echo.Context) error {
 	return c.JSON(201, map[string]interface{}{
 		"messages": "success",
 		"Task":     tasks,
+	})
+}
+
+func (ce *EchoController) GetOneTaskController(c echo.Context) error {
+	username := c.Param("username")
+	users, err := ce.svc.GetUserByUsernameService(username)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "username not found",
+		})
+	}
+
+	bearer := c.Get("user").(*jwt.Token)
+	claim := bearer.Claims.(jwt.MapClaims)
+	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "unauthorized",
+		})
+	}
+
+	activity_name := c.Param("activity_name")
+	activity, err := ce.svc.GetActivityByNameService(activity_name)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "activity not found",
+		})
+	}
+
+	err = ce.svc.CheckAcccessService(users.ID, activity.ID)
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "you dont have access to this activity",
+		})
+	}
+
+	task_id := c.Param("id")
+	task_id_int, _ := strconv.Atoi(task_id)
+	task, err := ce.svc.GetTaskByIDService(task_id_int)
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "task not found",
+		})
+	}
+
+	return c.JSON(201, map[string]interface{}{
+		"messages": "success",
+		"Task":     task,
 	})
 }
