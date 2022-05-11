@@ -3,14 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"github.com/arifwidiasan/todo-app/domain"
 	"github.com/arifwidiasan/todo-app/model"
 	"github.com/labstack/echo/v4"
 )
-
-type EchoController struct {
-	svc domain.AdapterService
-}
 
 func (ce *EchoController) CreateUserController(c echo.Context) error {
 	user := model.User{}
@@ -32,9 +27,9 @@ func (ce *EchoController) CreateUserController(c echo.Context) error {
 func (ce *EchoController) GetUserController(c echo.Context) error {
 	username := c.Param("username")
 
-	res, err := ce.svc.GetUserByUsername(username)
+	res, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
-		return c.JSON(500, map[string]interface{}{
+		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
 		})
 	}
