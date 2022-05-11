@@ -77,6 +77,32 @@ func (ce *EchoController) GetAllActivityController(c echo.Context) error {
 	})
 }
 
+func (ce *EchoController) GetAllArchiveActivityController(c echo.Context) error {
+	username := c.Param("username")
+	users, err := ce.svc.GetUserByUsernameService(username)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "username not found",
+		})
+	}
+
+	bearer := c.Get("user").(*jwt.Token)
+	claim := bearer.Claims.(jwt.MapClaims)
+	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "unauthorized",
+		})
+	}
+
+	activity := ce.svc.GetAllArchiveActivityService(username)
+
+	return c.JSON(200, map[string]interface{}{
+		"messages":      "success",
+		"List Activity": activity,
+	})
+}
+
 func (ce *EchoController) GetActivityController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)

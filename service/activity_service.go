@@ -20,6 +20,11 @@ func (s *svcUser) GetAllActivityService(username string) []model.Activity {
 	return s.repo.GetAllActivity(int(user.ID))
 }
 
+func (s *svcUser) GetAllArchiveActivityService(username string) []model.Activity {
+	user, _ := s.repo.GetUserByUsername(username)
+	return s.repo.GetAllArchiveActivity(int(user.ID))
+}
+
 func (s *svcUser) ReplaceActivityName(user_id int, activity model.Activity) model.Activity {
 	activity.Activity_Name = strings.ReplaceAll(activity.Activity_Name, " ", "-") + "-" + strconv.Itoa(user_id)
 

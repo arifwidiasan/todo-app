@@ -11,6 +11,7 @@ type AdapterRepository interface {
 	CreateActivity(activity model.Activity) error
 	GetLatestActivity() (activity model.Activity, err error)
 	GetAllActivity(id_user int) []model.Activity
+	GetAllArchiveActivity(id_user int) []model.Activity
 	GetActivityByName(name string) (activity model.Activity, err error)
 	UpdateActivityByID(id int, activity model.Activity) error
 	DeleteActivityByID(id int) error
@@ -35,6 +36,7 @@ type AdapterService interface {
 	GetLatestActivityService() (model.Activity, error)
 	ReplaceActivityName(user_id int, activity model.Activity) model.Activity
 	GetAllActivityService(username string) []model.Activity
+	GetAllArchiveActivityService(username string) []model.Activity
 	GetActivityByNameService(name string) (model.Activity, error)
 	UpdateActivityService(id int, activity model.Activity) error
 	DeleteActivityByIDService(id int) error

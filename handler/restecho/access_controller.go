@@ -158,3 +158,42 @@ func (ce *EchoController) DeleteOneAccessController(c echo.Context) error {
 		"username":      newUser.Username,
 	})
 }
+
+func (ce *EchoController) DeleteOneNonOwnerAccessController(c echo.Context) error {
+	username := c.Param("username")
+	users, err := ce.svc.GetUserByUsernameService(username)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "username not found",
+		})
+	}
+
+	bearer := c.Get("user").(*jwt.Token)
+	claim := bearer.Claims.(jwt.MapClaims)
+	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
+	if err != nil {
+		return c.JSON(401, map[string]interface{}{
+			"messages": "unauthorized",
+		})
+	}
+
+	activity_name := c.Param("activity_name")
+	activity, err := ce.svc.GetActivityByNameService(activity_name)
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": "activity not found",
+		})
+	}
+
+	err = ce.svc.DeleteOneAccessService(int(users.ID), int(activity.ID))
+	if err != nil {
+		return c.JSON(404, map[string]interface{}{
+			"messages": err.Error(),
+		})
+	}
+
+	return c.JSON(200, map[string]interface{}{
+		"messages":      "success delete access, you can't access this activity anymore",
+		"name activity": activity.Activity_Name,
+	})
+}
