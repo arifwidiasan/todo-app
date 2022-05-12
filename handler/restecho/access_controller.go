@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/arifwidiasan/todo-app/model"
-	"github.com/golang-jwt/jwt"
+	//"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,15 +12,6 @@ func (ce *EchoController) AddAccessActivityUserController(c echo.Context) error 
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
@@ -78,15 +69,6 @@ func (ce *EchoController) GetAccessUserActivityController(c echo.Context) error 
 		})
 	}
 
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
-		})
-	}
-
 	activity_name := c.Param("activity_name")
 	activity, err := ce.svc.GetActivityByNameService(activity_name)
 	if err != nil {
@@ -116,15 +98,6 @@ func (ce *EchoController) DeleteOneAccessController(c echo.Context) error {
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
@@ -171,15 +144,6 @@ func (ce *EchoController) DeleteOneNonOwnerAccessController(c echo.Context) erro
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
