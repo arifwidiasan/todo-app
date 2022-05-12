@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/arifwidiasan/todo-app/model"
-	"github.com/golang-jwt/jwt"
+	//"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,15 +12,6 @@ func (ce *EchoController) CreateActivityController(c echo.Context) error {
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
@@ -53,19 +44,10 @@ func (ce *EchoController) CreateActivityController(c echo.Context) error {
 
 func (ce *EchoController) GetAllActivityController(c echo.Context) error {
 	username := c.Param("username")
-	users, err := ce.svc.GetUserByUsernameService(username)
+	_, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
@@ -79,19 +61,10 @@ func (ce *EchoController) GetAllActivityController(c echo.Context) error {
 
 func (ce *EchoController) GetAllArchiveActivityController(c echo.Context) error {
 	username := c.Param("username")
-	users, err := ce.svc.GetUserByUsernameService(username)
+	_, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
@@ -109,15 +82,6 @@ func (ce *EchoController) GetActivityController(c echo.Context) error {
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
@@ -149,15 +113,6 @@ func (ce *EchoController) UpdateActivityController(c echo.Context) error {
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
@@ -205,15 +160,6 @@ func (ce *EchoController) DeleteActivityController(c echo.Context) error {
 		})
 	}
 
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
-		})
-	}
-
 	name := c.Param("activity_name")
 
 	res, err := ce.svc.GetActivityByNameService(name)
@@ -255,15 +201,6 @@ func (ce *EchoController) ArchiveActivityController(c echo.Context) error {
 		})
 	}
 
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
-		})
-	}
-
 	name := c.Param("activity_name")
 
 	res, err := ce.svc.GetActivityByNameService(name)
@@ -301,15 +238,6 @@ func (ce *EchoController) RestoreActivityController(c echo.Context) error {
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
 			"messages": "username not found",
-		})
-	}
-
-	bearer := c.Get("user").(*jwt.Token)
-	claim := bearer.Claims.(jwt.MapClaims)
-	err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-	if err != nil {
-		return c.JSON(401, map[string]interface{}{
-			"messages": "unauthorized",
 		})
 	}
 
