@@ -34,11 +34,7 @@ func (r *repositoryMysqlLayer) CheckAccessOwner(user_id, activity_id uint) (acce
 }
 
 func (r *repositoryMysqlLayer) DeleteAllAccess(activity_id int) error {
-	res := r.DB.Unscoped().Where("activity_id = ?", activity_id).Delete(&model.Access{})
-
-	if res.RowsAffected < 1 {
-		return fmt.Errorf("error delete all accesss in this activity")
-	}
+	r.DB.Unscoped().Where("activity_id = ?", activity_id).Delete(&model.Access{})
 
 	return nil
 }
