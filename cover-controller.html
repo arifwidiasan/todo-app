@@ -83,7 +83,7 @@
 
 import (
         "github.com/arifwidiasan/todo-app/model"
-        "github.com/golang-jwt/jwt"
+        //"github.com/golang-jwt/jwt"
         "github.com/labstack/echo/v4"
 )
 
@@ -93,15 +93,6 @@ func (ce *EchoController) AddAccessActivityUserController(c echo.Context) error 
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -159,15 +150,6 @@ func (ce *EchoController) GetAccessUserActivityController(c echo.Context) error 
                 })
         }</span>
 
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
-                })
-        }</span>
-
         <span class="cov0" title="0">activity_name := c.Param("activity_name")
         activity, err := ce.svc.GetActivityByNameService(activity_name)
         if err != nil </span><span class="cov0" title="0">{
@@ -197,15 +179,6 @@ func (ce *EchoController) DeleteOneAccessController(c echo.Context) error <span 
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -255,15 +228,6 @@ func (ce *EchoController) DeleteOneNonOwnerAccessController(c echo.Context) erro
                 })
         }</span>
 
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
-                })
-        }</span>
-
         <span class="cov0" title="0">activity_name := c.Param("activity_name")
         activity, err := ce.svc.GetActivityByNameService(activity_name)
         if err != nil </span><span class="cov0" title="0">{
@@ -290,7 +254,7 @@ func (ce *EchoController) DeleteOneNonOwnerAccessController(c echo.Context) erro
 
 import (
         "github.com/arifwidiasan/todo-app/model"
-        "github.com/golang-jwt/jwt"
+        //"github.com/golang-jwt/jwt"
         "github.com/labstack/echo/v4"
 )
 
@@ -300,15 +264,6 @@ func (ce *EchoController) CreateActivityController(c echo.Context) error <span c
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -341,19 +296,10 @@ func (ce *EchoController) CreateActivityController(c echo.Context) error <span c
 
 func (ce *EchoController) GetAllActivityController(c echo.Context) error <span class="cov0" title="0">{
         username := c.Param("username")
-        users, err := ce.svc.GetUserByUsernameService(username)
+        _, err := ce.svc.GetUserByUsernameService(username)
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -367,19 +313,10 @@ func (ce *EchoController) GetAllActivityController(c echo.Context) error <span c
 
 func (ce *EchoController) GetAllArchiveActivityController(c echo.Context) error <span class="cov0" title="0">{
         username := c.Param("username")
-        users, err := ce.svc.GetUserByUsernameService(username)
+        _, err := ce.svc.GetUserByUsernameService(username)
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -397,15 +334,6 @@ func (ce *EchoController) GetActivityController(c echo.Context) error <span clas
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -437,15 +365,6 @@ func (ce *EchoController) UpdateActivityController(c echo.Context) error <span c
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -493,15 +412,6 @@ func (ce *EchoController) DeleteActivityController(c echo.Context) error <span c
                 })
         }</span>
 
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
-                })
-        }</span>
-
         <span class="cov0" title="0">name := c.Param("activity_name")
 
         res, err := ce.svc.GetActivityByNameService(name)
@@ -543,15 +453,6 @@ func (ce *EchoController) ArchiveActivityController(c echo.Context) error <span 
                 })
         }</span>
 
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
-                })
-        }</span>
-
         <span class="cov0" title="0">name := c.Param("activity_name")
 
         res, err := ce.svc.GetActivityByNameService(name)
@@ -589,15 +490,6 @@ func (ce *EchoController) RestoreActivityController(c echo.Context) error <span 
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -921,7 +813,7 @@ import (
         "strconv"
 
         "github.com/arifwidiasan/todo-app/model"
-        "github.com/golang-jwt/jwt"
+        //"github.com/golang-jwt/jwt"
         "github.com/labstack/echo/v4"
 )
 
@@ -931,15 +823,6 @@ func (ce *EchoController) CreateTaskController(c echo.Context) error <span class
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -982,15 +865,6 @@ func (ce *EchoController) GetAllTaskController(c echo.Context) error <span class
                 })
         }</span>
 
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
-                })
-        }</span>
-
         <span class="cov0" title="0">activity_name := c.Param("activity_name")
         activity, err := ce.svc.GetActivityByNameService(activity_name)
         if err != nil </span><span class="cov0" title="0">{
@@ -1019,15 +893,6 @@ func (ce *EchoController) GetOneTaskController(c echo.Context) error <span class
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -1067,15 +932,6 @@ func (ce *EchoController) UpdateTaskController(c echo.Context) error <span class
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -1122,15 +978,6 @@ func (ce *EchoController) DeleteTaskController(c echo.Context) error <span class
                 })
         }</span>
 
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
-                })
-        }</span>
-
         <span class="cov0" title="0">name := c.Param("activity_name")
 
         res, err := ce.svc.GetActivityByNameService(name)
@@ -1168,15 +1015,6 @@ func (ce *EchoController) CompleteTaskController(c echo.Context) error <span cla
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 
@@ -1227,15 +1065,6 @@ func (ce *EchoController) UndoCompletedTaskController(c echo.Context) error <spa
         if err != nil </span><span class="cov0" title="0">{
                 return c.JSON(404, map[string]interface{}{
                         "messages": "username not found",
-                })
-        }</span>
-
-        <span class="cov0" title="0">bearer := c.Get("user").(*jwt.Token)
-        claim := bearer.Claims.(jwt.MapClaims)
-        err = ce.svc.CheckAuth(int(users.ID), int(claim["id"].(float64)))
-        if err != nil </span><span class="cov0" title="0">{
-                return c.JSON(401, map[string]interface{}{
-                        "messages": "unauthorized",
                 })
         }</span>
 

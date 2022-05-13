@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>repository: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/arifwidiasan/todo-app/repository/access_repository.go (90.5%)</option>
+				
+				<option value="file1">github.com/arifwidiasan/todo-app/repository/activity_repository.go (93.3%)</option>
+				
+				<option value="file2">github.com/arifwidiasan/todo-app/repository/adapter.go (100.0%)</option>
+				
+				<option value="file3">github.com/arifwidiasan/todo-app/repository/task_repository.go (92.0%)</option>
+				
+				<option value="file4">github.com/arifwidiasan/todo-app/repository/user_repository.go (91.7%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package repository
+
+import (
+        "fmt"
+
+        "github.com/arifwidiasan/todo-app/model"
+)
+
+func (r *repositoryMysqlLayer) CreateAccess(access model.Access) error <span class="cov8" title="1">{
+        res := r.DB.Create(&amp;access)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error insert access")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (r *repositoryMysqlLayer) CheckAccess(user_id, activity_id uint) (access model.Access, err error) <span class="cov8" title="1">{
+        res := r.DB.Where("user_id = ? AND activity_id = ?", user_id, activity_id).Find(&amp;access)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                err = fmt.Errorf("access not found")
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+func (r *repositoryMysqlLayer) CheckAccessOwner(user_id, activity_id uint) (access model.Access, err error) <span class="cov8" title="1">{
+        res := r.DB.Where("access_owner = ? AND user_id = ? AND activity_id = ?", "1", user_id, activity_id).Find(&amp;access)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                err = fmt.Errorf("access not found, you're not the owner")
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+func (r *repositoryMysqlLayer) DeleteAllAccess(activity_id int) error <span class="cov8" title="1">{
+        r.DB.Unscoped().Where("activity_id = ?", activity_id).Delete(&amp;model.Access{})
+
+        return nil
+}</span>
+
+func (r *repositoryMysqlLayer) GetAccessUserActivity(activity_id int) []model.ListAccess <span class="cov8" title="1">{
+        res := []model.ListAccess{}
+        r.DB.Model(&amp;model.User{}).Select("users.username, accesses.access_owner").
+                Joins("JOIN accesses on accesses.user_id = users.id").
+                Where("accesses.activity_id = ?", activity_id).
+                Scan(&amp;res)
+
+        return res
+}</span>
+
+func (r *repositoryMysqlLayer) DeleteOneAccess(user_id, activity_id int) error <span class="cov8" title="1">{
+        res := r.DB.Unscoped().Where("access_owner = ? AND user_id = ? AND activity_id = ?", "0", user_id, activity_id).Delete(&amp;model.Access{})
+
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error delete because you're the owner or no access found")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package repository
+
+import (
+        "fmt"
+
+        "github.com/arifwidiasan/todo-app/model"
+)
+
+func (r *repositoryMysqlLayer) CreateActivity(activity model.Activity) error <span class="cov8" title="1">{
+        res := r.DB.Create(&amp;activity)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error insert activity")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (r *repositoryMysqlLayer) GetLatestActivity() (activity model.Activity, err error) <span class="cov8" title="1">{
+        res := r.DB.Last(&amp;activity)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                err = fmt.Errorf("activity not found")
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+func (r *repositoryMysqlLayer) GetAllActivity(id_user int) []model.Activity <span class="cov8" title="1">{
+        activity := []model.Activity{}
+        r.DB.Model(&amp;model.Activity{}).Joins("left join accesses on accesses.activity_id = activities.id").
+                Where("accesses.user_id = ? AND activities.archived = 0", id_user).
+                Scan(&amp;activity)
+
+        return activity
+}</span>
+
+func (r *repositoryMysqlLayer) GetAllArchiveActivity(id_user int) []model.Activity <span class="cov8" title="1">{
+        activity := []model.Activity{}
+        r.DB.Model(&amp;model.Activity{}).Joins("left join accesses on accesses.activity_id = activities.id").
+                Where("accesses.user_id = ? AND activities.archived = 1", id_user).
+                Scan(&amp;activity)
+
+        return activity
+}</span>
+
+func (r *repositoryMysqlLayer) GetActivityByName(name string) (activity model.Activity, err error) <span class="cov8" title="1">{
+        res := r.DB.Where("activity_name = ?", name).Find(&amp;activity)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                err = fmt.Errorf("activity not found")
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+func (r *repositoryMysqlLayer) UpdateActivityByID(id int, activity model.Activity) error <span class="cov8" title="1">{
+        res := r.DB.Where("id = ?", id).UpdateColumns(&amp;activity)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error update activity")
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (r *repositoryMysqlLayer) ArchiveActivityByID(id int, activity model.Activity) error <span class="cov8" title="1">{
+        res := r.DB.Where("id = ?", id).Save(&amp;activity)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error update activity")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (r *repositoryMysqlLayer) DeleteActivityByID(id int) error <span class="cov8" title="1">{
+        res := r.DB.Unscoped().Delete(&amp;model.Activity{}, id)
+
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error delete")
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package repository
+
+import (
+        "github.com/arifwidiasan/todo-app/domain"
+
+        "gorm.io/gorm"
+)
+
+type repositoryMysqlLayer struct {
+        DB *gorm.DB
+}
+
+func NewMysqlRepository(db *gorm.DB) domain.AdapterRepository <span class="cov8" title="1">{
+        return &amp;repositoryMysqlLayer{
+                DB: db,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package repository
+
+import (
+        "fmt"
+
+        "github.com/arifwidiasan/todo-app/model"
+)
+
+func (r *repositoryMysqlLayer) CreateTask(task model.Task) error <span class="cov8" title="1">{
+        res := r.DB.Create(&amp;task)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error insert task")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (r *repositoryMysqlLayer) DeleteAllTask(activity_id int) error <span class="cov8" title="1">{
+        r.DB.Unscoped().Where("activity_id = ?", activity_id).Delete(&amp;model.Task{})
+
+        return nil
+}</span>
+
+func (r *repositoryMysqlLayer) GetAllTask(activity_id int) []model.Task <span class="cov8" title="1">{
+        task := []model.Task{}
+        r.DB.Model(&amp;model.Task{}).
+                Where("activity_id = ?", activity_id).
+                Scan(&amp;task)
+
+        return task
+}</span>
+
+func (r *repositoryMysqlLayer) GetTaskByID(id int) (task model.Task, err error) <span class="cov8" title="1">{
+        res := r.DB.Where("id = ?", id).Find(&amp;task)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                err = fmt.Errorf("task not found")
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+func (r *repositoryMysqlLayer) UpdateTaskByID(id int, task model.Task) error <span class="cov8" title="1">{
+        res := r.DB.Where("id = ?", id).UpdateColumns(&amp;task)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error update task")
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (r *repositoryMysqlLayer) DeleteTaskByID(id int) error <span class="cov8" title="1">{
+        res := r.DB.Unscoped().Delete(&amp;model.Task{}, id)
+
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error delete")
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (r *repositoryMysqlLayer) CompleteTaskByID(id int, task model.Task) error <span class="cov8" title="1">{
+        res := r.DB.Where("id = ?", id).Save(&amp;task)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error update task")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package repository
+
+import (
+        "fmt"
+
+        "github.com/arifwidiasan/todo-app/model"
+)
+
+func (r *repositoryMysqlLayer) CreateUsers(user model.User) error <span class="cov8" title="1">{
+        res := r.DB.Create(&amp;user)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                return fmt.Errorf("error insert user")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (r *repositoryMysqlLayer) GetUserByUsername(username string) (user model.User, err error) <span class="cov8" title="1">{
+        res := r.DB.Where("username = ?", username).Find(&amp;user)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                err = fmt.Errorf("user not found")
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+func (r *repositoryMysqlLayer) GetUserByID(id int) (user model.User, err error) <span class="cov8" title="1">{
+        res := r.DB.Where("id = ?", id).Find(&amp;user)
+        if res.RowsAffected &lt; 1 </span><span class="cov8" title="1">{
+                err = fmt.Errorf("user not found")
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
