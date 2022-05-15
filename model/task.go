@@ -18,3 +18,8 @@ func (t *Task) Complete() {
 func (t *Task) Undo() {
 	t.Task_Done = false
 }
+
+type Task_Priority struct {
+	ID                 int
+	Task_Priority_Name string
+}
