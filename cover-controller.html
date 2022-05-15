@@ -1,0 +1,1209 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>restecho: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/arifwidiasan/todo-app/handler/restecho/access_controller.go (0.0%)</option>
+				
+				<option value="file1">github.com/arifwidiasan/todo-app/handler/restecho/activity_controller.go (0.0%)</option>
+				
+				<option value="file2">github.com/arifwidiasan/todo-app/handler/restecho/handler.go (0.0%)</option>
+				
+				<option value="file3">github.com/arifwidiasan/todo-app/handler/restecho/mock.go (15.6%)</option>
+				
+				<option value="file4">github.com/arifwidiasan/todo-app/handler/restecho/task_controller.go (0.0%)</option>
+				
+				<option value="file5">github.com/arifwidiasan/todo-app/handler/restecho/user_controller.go (88.9%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package handler
+
+import (
+        "github.com/arifwidiasan/todo-app/model"
+        //"github.com/golang-jwt/jwt"
+        "github.com/labstack/echo/v4"
+)
+
+func (ce *EchoController) AddAccessActivityUserController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity_name := c.Param("activity_name")
+        activity, err := ce.svc.GetActivityByNameService(activity_name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessOwnerService(users.ID, activity.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity because you're not the owner",
+                })
+        }</span>
+
+        <span class="cov0" title="0">newUser := model.User{}
+        c.Bind(&amp;newUser)
+        if newUser.Username == users.Username </span><span class="cov0" title="0">{
+                return c.JSON(400, map[string]interface{}{
+                        "messages": "can't add yourself",
+                })
+        }</span>
+
+        <span class="cov0" title="0">newUser, err = ce.svc.GetUserByUsernameService(newUser.Username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "target username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">access := model.Access{}
+        err = ce.svc.CreateAccessService(newUser.ID, activity.ID, false, access)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(500, map[string]interface{}{
+                        "messages": err.Error(),
+                })
+        }</span>
+        <span class="cov0" title="0">return c.JSON(201, map[string]interface{}{
+                "messages":      "success add another user to this activity",
+                "name activity": activity.Activity_Name,
+                "username":      newUser.Username,
+        })</span>
+}
+
+func (ce *EchoController) GetAccessUserActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, _ := ce.svc.GetUserByUsernameService(username)
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity_name := c.Param("activity_name")
+        activity, err := ce.svc.GetActivityByNameService(activity_name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessOwnerService(users.ID, activity.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity because you're not the owner",
+                })
+        }</span>
+
+        <span class="cov0" title="0">listAccess := ce.svc.GetAccessUserActivityService(int(activity.ID))
+
+        return c.JSON(200, map[string]interface{}{
+                "messages":                   "success",
+                "List User in This Activity": listAccess,
+        })</span>
+}
+
+func (ce *EchoController) DeleteOneAccessController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity_name := c.Param("activity_name")
+        activity, err := ce.svc.GetActivityByNameService(activity_name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessOwnerService(users.ID, activity.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity because you're not the owner",
+                })
+        }</span>
+
+        <span class="cov0" title="0">newUser := model.User{}
+        c.Bind(&amp;newUser)
+        newUser, err = ce.svc.GetUserByUsernameService(newUser.Username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "target username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.DeleteOneAccessService(int(newUser.ID), int(activity.ID))
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": err.Error(),
+                })
+        }</span>
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages":      "success delete user to this activity",
+                "name activity": activity.Activity_Name,
+                "username":      newUser.Username,
+        })</span>
+}
+
+func (ce *EchoController) DeleteOneNonOwnerAccessController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity_name := c.Param("activity_name")
+        activity, err := ce.svc.GetActivityByNameService(activity_name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.DeleteOneAccessService(int(users.ID), int(activity.ID))
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": err.Error(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages":      "success delete access, you can't access this activity anymore",
+                "name activity": activity.Activity_Name,
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package handler
+
+import (
+        "github.com/arifwidiasan/todo-app/model"
+        //"github.com/golang-jwt/jwt"
+        "github.com/labstack/echo/v4"
+)
+
+func (ce *EchoController) CreateActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity := model.Activity{}
+        c.Bind(&amp;activity)
+        activity = ce.svc.ReplaceActivityName(int(users.ID), activity)
+
+        err = ce.svc.CreateActivityService(activity)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(500, map[string]interface{}{
+                        "messages": err.Error(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">latest_activity, _ := ce.svc.GetLatestActivityService()
+
+        access := model.Access{}
+        err = ce.svc.CreateAccessService(users.ID, latest_activity.ID, true, access)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(500, map[string]interface{}{
+                        "messages": err.Error(),
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(201, map[string]interface{}{
+                "messages":      "success",
+                "name activity": activity.Activity_Name,
+        })</span>
+}
+
+func (ce *EchoController) GetAllActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        _, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity := ce.svc.GetAllActivityService(username)
+
+        return c.JSON(200, map[string]interface{}{
+                "messages":      "success",
+                "List Activity": activity,
+        })</span>
+}
+
+func (ce *EchoController) GetAllArchiveActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        _, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity := ce.svc.GetAllArchiveActivityService(username)
+
+        return c.JSON(200, map[string]interface{}{
+                "messages":      "success",
+                "List Activity": activity,
+        })</span>
+}
+
+func (ce *EchoController) GetActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">name := c.Param("activity_name")
+
+        res, err := ce.svc.GetActivityByNameService(name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessService(users.ID, res.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "success",
+                "activity": res,
+        })</span>
+}
+
+func (ce *EchoController) UpdateActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">name := c.Param("activity_name")
+
+        res, err := ce.svc.GetActivityByNameService(name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessOwnerService(users.ID, res.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">id := res.ID
+
+        activity := model.Activity{}
+        c.Bind(&amp;activity)
+        activity = ce.svc.ReplaceActivityName(int(users.ID), activity)
+
+        err = ce.svc.UpdateActivityService(int(id), activity)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no id found or no change",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "edited",
+                "activity": activity.Activity_Name,
+        })</span>
+}
+
+func (ce *EchoController) DeleteActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">name := c.Param("activity_name")
+
+        res, err := ce.svc.GetActivityByNameService(name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessOwnerService(users.ID, res.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity or not owner",
+                })
+        }</span>
+
+        <span class="cov0" title="0">id := res.ID
+        ce.svc.DeleteAllAccessService(int(id))
+        ce.svc.DeleteAllTaskService(int(id))
+
+        err = ce.svc.DeleteActivityByIDService(int(id))
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no activity found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "activity deleted",
+        })</span>
+}
+
+func (ce *EchoController) ArchiveActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">name := c.Param("activity_name")
+
+        res, err := ce.svc.GetActivityByNameService(name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessOwnerService(users.ID, res.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">res.Archive()
+
+        err = ce.svc.ArchiveActivityService(int(res.ID), res)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no id found or no change",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "activity archived",
+                "activity": res,
+        })</span>
+}
+
+func (ce *EchoController) RestoreActivityController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">name := c.Param("activity_name")
+
+        res, err := ce.svc.GetActivityByNameService(name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessOwnerService(users.ID, res.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">res.Restore()
+
+        err = ce.svc.ArchiveActivityService(int(res.ID), res)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no id found or no change",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "activity is restored",
+                "activity": res,
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package handler
+
+import (
+        "github.com/arifwidiasan/todo-app/config"
+        "github.com/arifwidiasan/todo-app/database"
+        "github.com/arifwidiasan/todo-app/domain"
+
+        m "github.com/arifwidiasan/todo-app/middleware"
+        "github.com/arifwidiasan/todo-app/model"
+        "github.com/arifwidiasan/todo-app/repository"
+        "github.com/arifwidiasan/todo-app/service"
+
+        "github.com/labstack/echo/v4"
+        "github.com/labstack/echo/v4/middleware"
+)
+
+func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) <span class="cov0" title="0">{
+
+        db := database.InitDB(conf)
+        _ = NewData()
+        repo := repository.NewMysqlRepository(db)
+
+        svc := service.NewServiceUser(repo, conf)
+
+        cont := EchoController{
+                svc: svc,
+        }
+
+        e.GET("/health", func(c echo.Context) error </span><span class="cov0" title="0">{
+                return c.JSON(200, map[string]string{
+                        "message": "your request awesome",
+                })
+        }</span>)
+
+        <span class="cov0" title="0">apiUser := e.Group("/v1") //middleware.Logger(),
+        //middleware.CORS(),
+        //m.APIKEYMiddleware,
+
+        m.LogMiddleware(e)
+        apiUser.POST("/login", cont.LoginUserController)
+
+        apiUser.POST("/register", cont.CreateUserController)
+
+        apiUser.GET("/:username", cont.GetUserController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+        apiUser.GET("/:username/activities", cont.GetAllActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+        apiUser.POST("/:username/activities", cont.CreateActivityController, middleware.JWTWithConfig(
+                middleware.JWTConfig{
+                        SigningKey: []byte(conf.JWT_KEY),
+                },
+        ))
+
+        apiUser.GET("/:username/activities/archives", cont.GetAllArchiveActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+        apiUser.GET("/:username/activities/:activity_name", cont.GetActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+        apiUser.PUT("/:username/activities/:activity_name", cont.UpdateActivityController, middleware.JWTWithConfig(
+                middleware.JWTConfig{
+                        SigningKey: []byte(conf.JWT_KEY),
+                },
+        ))
+        apiUser.DELETE("/:username/activities/:activity_name", cont.DeleteActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+        apiUser.GET("/:username/activities/:activity_name/manage", cont.GetAccessUserActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+        apiUser.POST("/:username/activities/:activity_name/manage", cont.AddAccessActivityUserController, middleware.JWTWithConfig(
+                middleware.JWTConfig{
+                        SigningKey: []byte(conf.JWT_KEY),
+                },
+        ))
+        apiUser.DELETE("/:username/activities/:activity_name/manage", cont.DeleteOneAccessController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+        apiUser.DELETE("/:username/activities/:activity_name/remove", cont.DeleteOneNonOwnerAccessController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+        apiUser.PUT("/:username/activities/:activity_name/archive", cont.ArchiveActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+        apiUser.DELETE("/:username/activities/:activity_name/archive", cont.RestoreActivityController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+        apiUser.GET("/:username/activities/:activity_name/tasks", cont.GetAllTaskController, middleware.JWT([]byte(conf.JWT_KEY)))
+        apiUser.POST("/:username/activities/:activity_name/tasks", cont.CreateTaskController, middleware.JWTWithConfig(
+                middleware.JWTConfig{
+                        SigningKey: []byte(conf.JWT_KEY),
+                },
+        ))
+
+        apiUser.GET("/:username/activities/:activity_name/tasks/:id", cont.GetOneTaskController, middleware.JWT([]byte(conf.JWT_KEY)))
+        apiUser.PUT("/:username/activities/:activity_name/tasks/:id", cont.UpdateTaskController, middleware.JWT([]byte(conf.JWT_KEY)))
+        apiUser.DELETE("/:username/activities/:activity_name/tasks/:id", cont.DeleteTaskController, middleware.JWT([]byte(conf.JWT_KEY)))
+
+        apiUser.PUT("/:username/activities/:activity_name/tasks/:id/complete", cont.CompleteTaskController, middleware.JWT([]byte(conf.JWT_KEY)))
+        apiUser.DELETE("/:username/activities/:activity_name/tasks/:id/complete", cont.UndoCompletedTaskController, middleware.JWT([]byte(conf.JWT_KEY)))</span>
+}
+
+type Datas struct {
+}
+
+func (d *Datas) CreateUsers(user model.User) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetUserByUsername(username string) (user model.User, err error) <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetUserByID(id int) (user model.User, err error) <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+
+func (d *Datas) CreateActivity(activity model.Activity) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetLatestActivity() (activity model.Activity, err error) <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetAllActivity(id_user int) []model.Activity <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetAllArchiveActivity(id_user int) []model.Activity <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetActivityByName(name string) (activity model.Activity, err error) <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) UpdateActivityByID(id int, activity model.Activity) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) DeleteActivityByID(id int) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) ArchiveActivityByID(id int, activity model.Activity) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+
+func (d *Datas) CreateAccess(access model.Access) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) CheckAccess(user_id, activity_id uint) (access model.Access, err error) <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) CheckAccessOwner(user_id, activity_id uint) (access model.Access, err error) <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) DeleteAllAccess(activity_id int) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetAccessUserActivity(activity_id int) []model.ListAccess <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) DeleteOneAccess(user_id, activity_id int) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+
+func (d *Datas) CreateTask(task model.Task) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) DeleteAllTask(activity_id int) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetAllTask(activity_id int) []model.Task <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) GetTaskByID(id int) (task model.Task, err error) <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) UpdateTaskByID(id int, task model.Task) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) DeleteTaskByID(id int) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+func (d *Datas) CompleteTaskByID(id int, task model.Task) error <span class="cov0" title="0">{
+        panic("impl")</span>
+}
+
+func NewData() domain.AdapterRepository <span class="cov0" title="0">{
+        return &amp;Datas{}
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package handler
+
+import (
+        "github.com/arifwidiasan/todo-app/model"
+        "github.com/stretchr/testify/mock"
+)
+
+type MockSvc struct {
+        mock.Mock
+}
+
+func (m *MockSvc) CheckAuth(id, idToken int) error <span class="cov0" title="0">{
+        return nil
+}</span>
+
+func (m *MockSvc) CreateUserService(user model.User) error <span class="cov8" title="1">{
+        ret := m.Called()
+
+        return ret.Error(0)
+}</span>
+func (m *MockSvc) GetUserByIDService(id int) (model.User, error) <span class="cov0" title="0">{
+        return model.User{}, nil
+}</span>
+func (m *MockSvc) GetUserByUsernameService(username string) (model.User, error) <span class="cov8" title="1">{
+        ret := m.Called()
+
+        return model.User{}, ret.Error(0)
+}</span>
+func (m *MockSvc) LoginUser(username, password string) (string, int) <span class="cov8" title="1">{
+        return "success", 200
+}</span>
+
+func (m *MockSvc) CreateActivityService(activity model.Activity) error <span class="cov0" title="0">{
+        ret := m.Called()
+
+        return ret.Error(0)
+}</span>
+func (m *MockSvc) GetLatestActivityService() (model.Activity, error) <span class="cov0" title="0">{
+        return model.Activity{}, nil
+}</span>
+func (m *MockSvc) ReplaceActivityName(user_id int, activity model.Activity) model.Activity <span class="cov0" title="0">{
+        return model.Activity{}
+}</span>
+func (m *MockSvc) GetAllActivityService(username string) []model.Activity <span class="cov0" title="0">{
+        return []model.Activity{}
+}</span>
+func (m *MockSvc) GetAllArchiveActivityService(username string) []model.Activity <span class="cov0" title="0">{
+        return []model.Activity{}
+}</span>
+func (m *MockSvc) GetActivityByNameService(name string) (model.Activity, error) <span class="cov0" title="0">{
+        return model.Activity{}, nil
+}</span>
+func (m *MockSvc) UpdateActivityService(id int, activity model.Activity) error <span class="cov0" title="0">{
+        return nil
+}</span>
+func (m *MockSvc) DeleteActivityByIDService(id int) error <span class="cov0" title="0">{
+        return nil
+}</span>
+func (m *MockSvc) ArchiveActivityService(id int, activity model.Activity) error <span class="cov0" title="0">{
+        return nil
+}</span>
+
+func (m *MockSvc) CreateAccessService(user_id, activity_id uint, owner bool, access model.Access) error <span class="cov0" title="0">{
+        ret := m.Called()
+
+        return ret.Error(0)
+}</span>
+func (m *MockSvc) CheckAcccessService(user_id, activity_id uint) error <span class="cov0" title="0">{
+        return nil
+}</span>
+func (m *MockSvc) CheckAcccessOwnerService(user_id, activity_id uint) error <span class="cov0" title="0">{
+        return nil
+}</span>
+func (m *MockSvc) DeleteAllAccessService(activity_id int) error <span class="cov0" title="0">{
+        return nil
+}</span>
+func (m *MockSvc) GetAccessUserActivityService(activity_id int) []model.ListAccess <span class="cov0" title="0">{
+        return []model.ListAccess{}
+}</span>
+func (m *MockSvc) DeleteOneAccessService(user_id, activity_id int) error <span class="cov0" title="0">{
+        return nil
+}</span>
+
+func (m *MockSvc) CreateTaskService(activity_id uint, task model.Task) error <span class="cov0" title="0">{
+        ret := m.Called()
+
+        return ret.Error(0)
+}</span>
+func (m *MockSvc) DeleteAllTaskService(activity_id int) error <span class="cov0" title="0">{
+        return nil
+}</span>
+func (m *MockSvc) GetAllTaskService(activity_id int) []model.Task <span class="cov0" title="0">{
+        return []model.Task{}
+}</span>
+func (m *MockSvc) GetTaskByIDService(id int) (model.Task, error) <span class="cov0" title="0">{
+        return model.Task{}, nil
+}</span>
+func (m *MockSvc) UpdateTaskService(id int, task model.Task) error <span class="cov0" title="0">{
+        return nil
+}</span>
+func (m *MockSvc) DeleteTaskByIDService(id int) error <span class="cov0" title="0">{
+        return nil
+}</span>
+func (m *MockSvc) CompleteTaskService(id int, task model.Task) error <span class="cov0" title="0">{
+        return nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package handler
+
+import (
+        "strconv"
+
+        "github.com/arifwidiasan/todo-app/model"
+        //"github.com/golang-jwt/jwt"
+        "github.com/labstack/echo/v4"
+)
+
+func (ce *EchoController) CreateTaskController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity_name := c.Param("activity_name")
+        activity, err := ce.svc.GetActivityByNameService(activity_name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessService(users.ID, activity.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">newTask := model.Task{}
+        c.Bind(&amp;newTask)
+        err = ce.svc.CreateTaskService(activity.ID, newTask)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(500, map[string]interface{}{
+                        "messages": err.Error(),
+                })
+        }</span>
+        <span class="cov0" title="0">return c.JSON(201, map[string]interface{}{
+                "messages":      "success add task to this activity",
+                "name activity": activity.Activity_Name,
+                "Task":          newTask,
+        })</span>
+}
+
+func (ce *EchoController) GetAllTaskController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity_name := c.Param("activity_name")
+        activity, err := ce.svc.GetActivityByNameService(activity_name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessService(users.ID, activity.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">tasks := ce.svc.GetAllTaskService(int(activity.ID))
+        return c.JSON(200, map[string]interface{}{
+                "messages": "success",
+                "Task":     tasks,
+        })</span>
+}
+
+func (ce *EchoController) GetOneTaskController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity_name := c.Param("activity_name")
+        activity, err := ce.svc.GetActivityByNameService(activity_name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessService(users.ID, activity.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">task_id := c.Param("id")
+        task_id_int, _ := strconv.Atoi(task_id)
+        task, err := ce.svc.GetTaskByIDService(task_id_int)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "task not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "success",
+                "Task":     task,
+        })</span>
+}
+
+func (ce *EchoController) UpdateTaskController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">activity_name := c.Param("activity_name")
+        activity, err := ce.svc.GetActivityByNameService(activity_name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessService(users.ID, activity.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">task_id := c.Param("id")
+        task_id_int, _ := strconv.Atoi(task_id)
+
+        task := model.Task{}
+        c.Bind(&amp;task)
+        err = ce.svc.UpdateTaskService(task_id_int, task)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "task not found or no change",
+                })
+        }</span>
+
+        <span class="cov0" title="0">result, _ := ce.svc.GetTaskByIDService(task_id_int)
+        return c.JSON(200, map[string]interface{}{
+                "messages": "success update task",
+                "Task":     result,
+        })</span>
+}
+
+func (ce *EchoController) DeleteTaskController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">name := c.Param("activity_name")
+
+        res, err := ce.svc.GetActivityByNameService(name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessService(users.ID, res.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity or not owner",
+                })
+        }</span>
+
+        <span class="cov0" title="0">task_id := c.Param("id")
+        task_id_int, _ := strconv.Atoi(task_id)
+
+        err = ce.svc.DeleteTaskByIDService(task_id_int)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no task found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "task deleted",
+        })</span>
+}
+
+func (ce *EchoController) CompleteTaskController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">name := c.Param("activity_name")
+
+        res, err := ce.svc.GetActivityByNameService(name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessService(users.ID, res.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">task_id := c.Param("id")
+        task_id_int, _ := strconv.Atoi(task_id)
+
+        result, err := ce.svc.GetTaskByIDService(task_id_int)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no task found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">result.Complete()
+
+        err = ce.svc.CompleteTaskService(int(result.ID), result)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no id found or no change",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "task completed",
+                "activity": result,
+        })</span>
+}
+
+func (ce *EchoController) UndoCompletedTaskController(c echo.Context) error <span class="cov0" title="0">{
+        username := c.Param("username")
+        users, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">name := c.Param("activity_name")
+
+        res, err := ce.svc.GetActivityByNameService(name)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "activity not found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">err = ce.svc.CheckAcccessService(users.ID, res.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(401, map[string]interface{}{
+                        "messages": "you dont have access to this activity",
+                })
+        }</span>
+
+        <span class="cov0" title="0">task_id := c.Param("id")
+        task_id_int, _ := strconv.Atoi(task_id)
+
+        result, err := ce.svc.GetTaskByIDService(task_id_int)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no task found",
+                })
+        }</span>
+
+        <span class="cov0" title="0">result.Undo()
+
+        err = ce.svc.CompleteTaskService(int(result.ID), result)
+        if err != nil </span><span class="cov0" title="0">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "no id found or no change",
+                })
+        }</span>
+
+        <span class="cov0" title="0">return c.JSON(200, map[string]interface{}{
+                "messages": "success undo completed task",
+                "activity": result,
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package handler
+
+import (
+        "net/http"
+
+        "github.com/arifwidiasan/todo-app/model"
+        "github.com/labstack/echo/v4"
+)
+
+func (ce *EchoController) CreateUserController(c echo.Context) error <span class="cov8" title="1">{
+        user := model.User{}
+        c.Bind(&amp;user)
+
+        err := ce.svc.CreateUserService(user)
+        if err != nil </span><span class="cov8" title="1">{
+                return c.JSON(500, map[string]interface{}{
+                        "messages": err.Error(),
+                })
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(201, map[string]interface{}{
+                "messages": "success",
+                "users":    user,
+        })</span>
+}
+
+func (ce *EchoController) GetUserController(c echo.Context) error <span class="cov8" title="1">{
+        username := c.Param("username")
+
+        res, err := ce.svc.GetUserByUsernameService(username)
+        if err != nil </span><span class="cov8" title="1">{
+                return c.JSON(404, map[string]interface{}{
+                        "messages": "username not found",
+                })
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(200, map[string]interface{}{
+                "messages": "success",
+                "users":    res,
+        })</span>
+}
+
+func (ce *EchoController) LoginUserController(c echo.Context) error <span class="cov8" title="1">{
+        userLogin := model.LoginRequest{}
+
+        c.Bind(&amp;userLogin)
+
+        token, statusCode := ce.svc.LoginUser(userLogin.Username, userLogin.Password)
+        switch statusCode </span>{
+        case http.StatusUnauthorized:<span class="cov0" title="0">
+                return c.JSONPretty(http.StatusUnauthorized, map[string]interface{}{
+                        "messages": "username atau password salah",
+                }, "  ")</span>
+
+        case http.StatusInternalServerError:<span class="cov0" title="0">
+                return c.JSONPretty(http.StatusInternalServerError, map[string]interface{}{
+                        "messages": "internal",
+                }, "  ")</span>
+        }
+
+        <span class="cov8" title="1">return c.JSONPretty(http.StatusOK, map[string]interface{}{
+                "messages": "success",
+                "token":    token,
+        }, "  ")</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
