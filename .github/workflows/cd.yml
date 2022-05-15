@@ -18,6 +18,6 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd todo-app
-          git pull origin main
+          git pull origin master
           go test -v ./..
           docker-compose down && docker-compose up --build -d
