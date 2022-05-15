@@ -1,7 +1,7 @@
 name: testing github workflow
-on: [pull_request]
+on: [push, pull_request]
 jobs:
-  Coba-Github-Workflow:
+  Coba-Github-CI-Workflow:
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{secrets.MESSAGE_SECRET}}"
