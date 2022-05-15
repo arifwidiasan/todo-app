@@ -20,7 +20,7 @@ services:
       SERVER_ADDRESS: "0.0.0.0:8080"
       DB_HOST: "be_db_app"
     ports:
-      - "8080:8080"
+      - "80:8080"
     depends_on: 
       be_db_app:
         condition: service_healthy # memastikan kalau sudah bisa konek dan login sesuai healthcheck
