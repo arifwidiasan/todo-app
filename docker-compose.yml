@@ -6,7 +6,7 @@ services:
         - "3306:3306"
       environment:
         MYSQL_ROOT_PASSWORD : root
-        MYSQL_DATABASE: todo-app
+        MYSQL_DATABASE: todo_app
       healthcheck:   # wajib implementasi health check jika condition service_healthy
         test: ["CMD", "mysql", "-u", "root",  "-proot", "-e", "show schemas"]
         interval: 10s 
