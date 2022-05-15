@@ -19,5 +19,5 @@ jobs:
         script: |
           cd todo-app
           git pull origin master
-          go test -v ./..
+          go test -v ./...
           docker-compose down && docker-compose up --build -d
