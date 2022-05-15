@@ -1,5 +1,5 @@
 name: testing github workflow
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   Coba-Github-CI-Workflow:
     runs-on: ubuntu-latest
