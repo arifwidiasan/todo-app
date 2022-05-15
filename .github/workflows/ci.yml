@@ -1,0 +1,24 @@
+name: testing ci github workflow
+on: [pull_request]
+jobs:
+  Coba-Github-Workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{secrets.MESSAGE_SECRET}}"
+  
+  ini-unit-test:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/first-interaction@v1
+          with:
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
+            issue-message: 'Nice first issue, thank you'
+            pr-message: 'Nice pull request, thank you'
+       - uses: actions/checkout@v3
+
+       - name: Setup go
+         uses: actions/setup-go@v3
+         with:
+           go-version: '1.18'
+
+       - run: go test -v ./...
