@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{secrets.MESSAGE_SECRET}}"
-  
+      
   ini-unit-test:
     runs-on: ubuntu-latest
     steps:
@@ -14,7 +14,7 @@ jobs:
             repo-token: ${{ secrets.GITHUB_TOKEN }}
             issue-message: 'Nice first issue, thank you'
             pr-message: 'Nice pull request, thank you'
-            
+
        - uses: actions/checkout@v3
 
        - name: Setup go
