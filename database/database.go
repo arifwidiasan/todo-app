@@ -25,6 +25,16 @@ func InitDB(conf config.Config) *gorm.DB {
 		fmt.Println("error open conection : ", err)
 	}
 
+	priority := DB.Migrator().HasTable(&model.Task_Priority{})
+	if !priority {
+		DB.Migrator().CreateTable(&model.Task_Priority{})
+		DB.Model(&model.Task_Priority{}).Create([]map[string]interface{}{
+			{"task_priority_name": "Tidak penting dan tidak mendesak"},
+			{"task_priority_name": "Mendesak tapi tidak penting"},
+			{"task_priority_name": "Penting tapi tidak mendesak"},
+			{"task_priority_name": "Penting dan mendesak"},
+		})
+	}
 	DB.AutoMigrate(&model.User{}, &model.Activity{}, &model.Access{}, &model.Task{})
 	return DB
 }
