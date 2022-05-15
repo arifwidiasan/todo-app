@@ -1,0 +1,24 @@
+version: "2.1" # versi nya harus 2.0 kalau mau pake condition di depends_on
+services:
+  be_db_app:
+      image: "mysql:latest"
+      ports:
+        - "3306:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD : root
+        MYSQL_DATABASE: todo-app
+      healthcheck:   # wajib implementasi health check jika condition service_healthy
+        test: ["CMD", "mysql", "-u", "root",  "-proot", "-e", "show schemas"]
+        interval: 10s 
+      
+  be_todo_app:
+    build: .
+    restart: always
+    environment:
+      SERVER_ADDRESS: "0.0.0.0:8080"
+      DB_HOST: "be_db_app"
+    ports:
+      - "8080:8080"
+    depends_on: 
+      be_db_app:
+        condition: service_healthy # memastikan kalau sudah bisa konek dan login sesuai healthcheck
