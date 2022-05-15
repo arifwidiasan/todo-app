@@ -2,7 +2,7 @@ name: testing github workflow
 on: [pull_request]
 jobs:
   Coba-Github-Workflow:
-    runs-on: windows-2019
+    runs-on: ubuntu-latest
     steps:
       - run: echo "${{secrets.MESSAGE_SECRET}}"
   
