@@ -7,6 +7,8 @@ services:
       environment:
         MYSQL_ROOT_PASSWORD : root
         MYSQL_DATABASE: todo_app
+      volumes:
+        - my-datavolume:/var/lib/mysql
       healthcheck:   # wajib implementasi health check jika condition service_healthy
         test: ["CMD", "mysql", "-u", "root",  "-proot", "-e", "show schemas"]
         interval: 10s 
@@ -22,3 +24,6 @@ services:
     depends_on: 
       be_db_app:
         condition: service_healthy # memastikan kalau sudah bisa konek dan login sesuai healthcheck
+        
+volumes:
+  my-datavolume:
