@@ -9,6 +9,8 @@ jobs:
   ini-unit-test:
     runs-on: ubuntu-latest
     steps:
+       - uses: actions/checkout@v3
+       
        - name: Setup go
          uses: actions/setup-go@v3
          with:
