@@ -6,6 +6,19 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// CreateActivity godoc
+// @Summary Create New Activity.
+// @Description create new activity for user.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity	body	model.CreateActivity	true	"JSON"
+// @Success	201	{object} model.CreateActivity
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 404 {object} model.UserNotFound
+// @Failure 500 {object} model.FailCreateActivity
+// @Router /{username}/activities [POST]
 func (ce *EchoController) CreateActivityController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -42,6 +55,17 @@ func (ce *EchoController) CreateActivityController(c echo.Context) error {
 	})
 }
 
+// GetAllActivity godoc
+// @Summary Get All Activity.
+// @Description get all activity by user.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Success	200	{object} model.Activity
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 404 {object} model.UserNotFound
+// @Router /{username}/activities [GET]
 func (ce *EchoController) GetAllActivityController(c echo.Context) error {
 	username := c.Param("username")
 	_, err := ce.svc.GetUserByUsernameService(username)
@@ -59,6 +83,17 @@ func (ce *EchoController) GetAllActivityController(c echo.Context) error {
 	})
 }
 
+// GetAllArchivedActivity godoc
+// @Summary Get All Archived Activity.
+// @Description get all archived activity by user.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Success	200	{object} model.Activity
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 404 {object} model.UserNotFound
+// @Router /{username}/activities/archives [GET]
 func (ce *EchoController) GetAllArchiveActivityController(c echo.Context) error {
 	username := c.Param("username")
 	_, err := ce.svc.GetUserByUsernameService(username)
@@ -76,6 +111,20 @@ func (ce *EchoController) GetAllArchiveActivityController(c echo.Context) error 
 	})
 }
 
+// GetActivity godoc
+// @Summary Get a Activity.
+// @Description get a activity by activity name.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Success	200	{object} model.Activity
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Router /{username}/activities/{activity_name} [GET]
 func (ce *EchoController) GetActivityController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -107,6 +156,22 @@ func (ce *EchoController) GetActivityController(c echo.Context) error {
 	})
 }
 
+// UpdateActivity godoc
+// @Summary Update a Activity.
+// @Description update a activity by activity name.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Param	activity	body	model.CreateActivity	true	"JSON"
+// @Success	200	{object} model.ActivityUpdated
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 404 {object} model.FailUpdateActivity
+// @Router /{username}/activities/{activity_name} [PUT]
 func (ce *EchoController) UpdateActivityController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -151,6 +216,20 @@ func (ce *EchoController) UpdateActivityController(c echo.Context) error {
 	})
 }
 
+// DeleteActivity godoc
+// @Summary Delete a Activity.
+// @Description Delete a activity by activity name.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Success	200	{object} model.ActivityDeleted
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccessOwner
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Router /{username}/activities/{activity_name} [DELETE]
 func (ce *EchoController) DeleteActivityController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -192,6 +271,21 @@ func (ce *EchoController) DeleteActivityController(c echo.Context) error {
 	})
 }
 
+// ArchiveActivity godoc
+// @Summary Archive a Activity.
+// @Description archive a activity by activity name.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Success	200	{object} model.ActivityArchived
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccessOwner
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 404 {object} model.FailUpdateActivity
+// @Router /{username}/activities/{activity_name}/archive [PUT]
 func (ce *EchoController) ArchiveActivityController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -232,6 +326,21 @@ func (ce *EchoController) ArchiveActivityController(c echo.Context) error {
 	})
 }
 
+// RestoreActivity godoc
+// @Summary Restore a Activity.
+// @Description restore a activity by activity name.
+// @Tags Activity
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Success	200	{object} model.ActivityRestored
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccessOwner
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 404 {object} model.FailUpdateActivity
+// @Router /{username}/activities/{activity_name}/archive [DELETE]
 func (ce *EchoController) RestoreActivityController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
