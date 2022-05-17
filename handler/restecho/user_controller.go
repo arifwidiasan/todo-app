@@ -7,6 +7,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// CreateUser godoc
+// @Summary Create/Register New User.
+// @Description create new user with username, user_email. user_pass.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param	user	body	model.CreateUser	true	"JSON username, user_email, and user_pass"
+// @Success	201	{object} model.CreateUser
+// @Failure 500 {object} model.FailCreateUser "Internal Server Error"
+// @Router /register [POST]
 func (ce *EchoController) CreateUserController(c echo.Context) error {
 	user := model.User{}
 	c.Bind(&user)
@@ -24,6 +34,17 @@ func (ce *EchoController) CreateUserController(c echo.Context) error {
 	})
 }
 
+// GetUser godoc
+// @Summary Get a User.
+// @Description get a user information by username.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Success	200	{object} model.UserFound "success"
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 404 {object} model.UserNotFound
+// @Router /{username} [GET]
 func (ce *EchoController) GetUserController(c echo.Context) error {
 	username := c.Param("username")
 
@@ -40,6 +61,17 @@ func (ce *EchoController) GetUserController(c echo.Context) error {
 	})
 }
 
+// LoginUser godoc
+// @Summary Login User.
+// @Description login user to get jwt token.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param	user	body	model.LoginRequest	true	"JSON username and user_pass"
+// @Success	200	{object} model.SuccessLoginUser
+// @Failure 401 {object} model.FailCreateUser "unauthorized"
+// @Failure 500 {object} model.FailCreateUser "internal server error"
+// @Router /login [POST]
 func (ce *EchoController) LoginUserController(c echo.Context) error {
 	userLogin := model.LoginRequest{}
 
