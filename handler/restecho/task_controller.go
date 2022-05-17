@@ -8,6 +8,22 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// AddTask godoc
+// @Summary Create Task of an Activity.
+// @Description create task of an activity.
+// @Tags Task
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Param	task	body	model.CreateTask	true	"JSON"
+// @Success	201	{object} model.SuccessCreateTask
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 500 {object} model.FailCreateTask
+// @Router /{username}/activities/{activity_name}/tasks [POST]
 func (ce *EchoController) CreateTaskController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -47,6 +63,20 @@ func (ce *EchoController) CreateTaskController(c echo.Context) error {
 	})
 }
 
+// GetAllTask godoc
+// @Summary Get All Task in an Activity.
+// @Description get all task in an activity.
+// @Tags Task
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Success	200	{object} model.Task
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Router /{username}/activities/{activity_name}/tasks [GET]
 func (ce *EchoController) GetAllTaskController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -78,6 +108,22 @@ func (ce *EchoController) GetAllTaskController(c echo.Context) error {
 	})
 }
 
+// GetTask godoc
+// @Summary Get a Task in an Activity.
+// @Description get a task in an activity.
+// @Tags Task
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Param	id	path	string	true	"ID task"
+// @Success	200	{object} model.Task
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 404 {object} model.TaskNotFound
+// @Router /{username}/activities/{activity_name}/tasks/{id} [GET]
 func (ce *EchoController) GetOneTaskController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -106,7 +152,7 @@ func (ce *EchoController) GetOneTaskController(c echo.Context) error {
 	task_id_int, _ := strconv.Atoi(task_id)
 	task, err := ce.svc.GetTaskByIDService(task_id_int)
 	if err != nil {
-		return c.JSON(401, map[string]interface{}{
+		return c.JSON(404, map[string]interface{}{
 			"messages": "task not found",
 		})
 	}
@@ -117,6 +163,24 @@ func (ce *EchoController) GetOneTaskController(c echo.Context) error {
 	})
 }
 
+// UpdateTask godoc
+// @Summary Update a Task in an Activity.
+// @Description update a task in an activity.
+// @Tags Task
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Param	id	path	string	true	"ID task"
+// @Param	task	body	model.CreateTask	true	"JSON"
+// @Success	200	{object} model.TaskUpdated
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 404 {object} model.TaskNotFound
+// @Failure 404 {object} model.FailUpdateTask
+// @Router /{username}/activities/{activity_name}/tasks/{id} [PUT]
 func (ce *EchoController) UpdateTaskController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -148,7 +212,7 @@ func (ce *EchoController) UpdateTaskController(c echo.Context) error {
 	c.Bind(&task)
 	err = ce.svc.UpdateTaskService(task_id_int, task)
 	if err != nil {
-		return c.JSON(401, map[string]interface{}{
+		return c.JSON(404, map[string]interface{}{
 			"messages": "task not found or no change",
 		})
 	}
@@ -160,6 +224,23 @@ func (ce *EchoController) UpdateTaskController(c echo.Context) error {
 	})
 }
 
+// DeleteTask godoc
+// @Summary Delete a Task in an Activity.
+// @Description delete a task in an activity.
+// @Tags Task
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Param	id	path	string	true	"ID task"
+// @Success	200	{object} model.TaskDeleted
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 404 {object} model.TaskNotFound
+// @Failure 404 {object} model.FailUpdateTask
+// @Router /{username}/activities/{activity_name}/tasks/{id} [DELETE]
 func (ce *EchoController) DeleteTaskController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -200,6 +281,22 @@ func (ce *EchoController) DeleteTaskController(c echo.Context) error {
 	})
 }
 
+// CompleteTask godoc
+// @Summary Complete a Task in an Activity.
+// @Description complete a task in an activity.
+// @Tags Task
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Param	id	path	string	true	"ID task"
+// @Success	200	{object} model.TaskCompleted
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 404 {object} model.TaskNotFound
+// @Router /{username}/activities/{activity_name}/tasks/{id}/complete [PUT]
 func (ce *EchoController) CompleteTaskController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)
@@ -250,6 +347,22 @@ func (ce *EchoController) CompleteTaskController(c echo.Context) error {
 	})
 }
 
+// UndoCompleteTask godoc
+// @Summary Undo a Completed Task in an Activity.
+// @Description undo a completed task in an activity.
+// @Tags Task
+// @Accept json
+// @Produce json
+// @Param	username	path	string	true	"Username"
+// @Param	activity_name	path	string	true	"Activity Name"
+// @Param	id	path	string	true	"ID task"
+// @Success	200	{object} model.TaskUndo
+// @Failure 400 {object} model.JWTNotFound
+// @Failure 401 {object} model.NoAccess
+// @Failure 404 {object} model.UserNotFound
+// @Failure 404 {object} model.ActivityNotFound
+// @Failure 404 {object} model.TaskNotFound
+// @Router /{username}/activities/{activity_name}/tasks/{id}/complete [DELETE]
 func (ce *EchoController) UndoCompletedTaskController(c echo.Context) error {
 	username := c.Param("username")
 	users, err := ce.svc.GetUserByUsernameService(username)

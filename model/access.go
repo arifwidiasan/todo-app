@@ -11,6 +11,6 @@ type Access struct {
 }
 
 type ListAccess struct {
-	Username     string
-	Access_Owner bool
+	Username     string `example:"arifwidiasan"`
+	Access_Owner bool   `example:"true"`
 }
