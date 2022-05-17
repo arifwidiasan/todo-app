@@ -1,4 +1,4 @@
-version: "2.1" # versi nya harus 2.0 kalau mau pake condition di depends_on
+version: "2.1"
 services:
   be_db_app:
       image: "mysql:latest"
