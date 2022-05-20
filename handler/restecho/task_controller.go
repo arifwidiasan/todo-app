@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/arifwidiasan/todo-app/model"
-	//"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -14,18 +14,17 @@ import (
 // @Tags Task
 // @Accept json
 // @Produce json
-// @Param	username	path	string	true	"Username"
 // @Param	activity_name	path	string	true	"Activity Name"
-// @Param	task	body	model.CreateTask	true	"JSON"
-// @Success	201	{object} model.SuccessCreateTask
-// @Failure 400 {object} model.JWTNotFound
-// @Failure 401 {object} model.NoAccess
-// @Failure 404 {object} model.UserNotFound
-// @Failure 404 {object} model.ActivityNotFound
-// @Failure 500 {object} model.FailCreateTask
-// @Router /{username}/activities/{activity_name}/tasks [POST]
+// @Param	task	body	docs.CreateTask	true	"JSON"
+// @Success	201	{string} string "created"
+// @Failure 400 {string} string "bad request"
+// @Failure 401 {string} string "no access"
+// @Failure 404 {string} string "not found"
+// @Failure 500 {string} string "internal server error"
+// @Router /activities/{activity_name}/tasks [POST]
 func (ce *EchoController) CreateTaskController(c echo.Context) error {
-	username := c.Param("username")
+	username := ce.svc.ClaimToken(c.Get("user").(*jwt.Token))
+
 	users, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
@@ -58,8 +57,8 @@ func (ce *EchoController) CreateTaskController(c echo.Context) error {
 	}
 	return c.JSON(201, map[string]interface{}{
 		"messages":      "success add task to this activity",
-		"name activity": activity.Activity_Name,
-		"Task":          newTask,
+		"activity_name": activity.Activity_Name,
+		"task":          newTask,
 	})
 }
 
@@ -69,16 +68,15 @@ func (ce *EchoController) CreateTaskController(c echo.Context) error {
 // @Tags Task
 // @Accept json
 // @Produce json
-// @Param	username	path	string	true	"Username"
 // @Param	activity_name	path	string	true	"Activity Name"
-// @Success	200	{object} model.Task
-// @Failure 400 {object} model.JWTNotFound
-// @Failure 401 {object} model.NoAccess
-// @Failure 404 {object} model.UserNotFound
-// @Failure 404 {object} model.ActivityNotFound
-// @Router /{username}/activities/{activity_name}/tasks [GET]
+// @Success	200	{string} string "ok"
+// @Failure 400 {string} string "bad request"
+// @Failure 401 {string} string "no access"
+// @Failure 404 {string} string "not found"
+// @Router /activities/{activity_name}/tasks [GET]
 func (ce *EchoController) GetAllTaskController(c echo.Context) error {
-	username := c.Param("username")
+	username := ce.svc.ClaimToken(c.Get("user").(*jwt.Token))
+
 	users, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
@@ -104,7 +102,7 @@ func (ce *EchoController) GetAllTaskController(c echo.Context) error {
 	tasks := ce.svc.GetAllTaskService(int(activity.ID))
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success",
-		"Task":     tasks,
+		"tasks":    tasks,
 	})
 }
 
@@ -114,18 +112,16 @@ func (ce *EchoController) GetAllTaskController(c echo.Context) error {
 // @Tags Task
 // @Accept json
 // @Produce json
-// @Param	username	path	string	true	"Username"
 // @Param	activity_name	path	string	true	"Activity Name"
 // @Param	id	path	string	true	"ID task"
-// @Success	200	{object} model.Task
-// @Failure 400 {object} model.JWTNotFound
-// @Failure 401 {object} model.NoAccess
-// @Failure 404 {object} model.UserNotFound
-// @Failure 404 {object} model.ActivityNotFound
-// @Failure 404 {object} model.TaskNotFound
-// @Router /{username}/activities/{activity_name}/tasks/{id} [GET]
+// @Success	200	{string} string "ok"
+// @Failure 400 {string} string "bad request"
+// @Failure 401 {string} string "no access"
+// @Failure 404 {string} string "not found"
+// @Router /activities/{activity_name}/tasks/{id} [GET]
 func (ce *EchoController) GetOneTaskController(c echo.Context) error {
-	username := c.Param("username")
+	username := ce.svc.ClaimToken(c.Get("user").(*jwt.Token))
+
 	users, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
@@ -159,7 +155,7 @@ func (ce *EchoController) GetOneTaskController(c echo.Context) error {
 
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success",
-		"Task":     task,
+		"task":     task,
 	})
 }
 
@@ -169,20 +165,17 @@ func (ce *EchoController) GetOneTaskController(c echo.Context) error {
 // @Tags Task
 // @Accept json
 // @Produce json
-// @Param	username	path	string	true	"Username"
 // @Param	activity_name	path	string	true	"Activity Name"
 // @Param	id	path	string	true	"ID task"
-// @Param	task	body	model.CreateTask	true	"JSON"
-// @Success	200	{object} model.TaskUpdated
-// @Failure 400 {object} model.JWTNotFound
-// @Failure 401 {object} model.NoAccess
-// @Failure 404 {object} model.UserNotFound
-// @Failure 404 {object} model.ActivityNotFound
-// @Failure 404 {object} model.TaskNotFound
-// @Failure 404 {object} model.FailUpdateTask
-// @Router /{username}/activities/{activity_name}/tasks/{id} [PUT]
+// @Param	task	body	docs.CreateTask	true	"JSON"
+// @Success	200	{string} string "ok"
+// @Failure 400 {string} string "bad request"
+// @Failure 401 {string} string "no access"
+// @Failure 404 {string} string "not found"
+// @Router /activities/{activity_name}/tasks/{id} [PUT]
 func (ce *EchoController) UpdateTaskController(c echo.Context) error {
-	username := c.Param("username")
+	username := ce.svc.ClaimToken(c.Get("user").(*jwt.Token))
+
 	users, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
@@ -220,7 +213,7 @@ func (ce *EchoController) UpdateTaskController(c echo.Context) error {
 	result, _ := ce.svc.GetTaskByIDService(task_id_int)
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success update task",
-		"Task":     result,
+		"task":     result,
 	})
 }
 
@@ -230,19 +223,16 @@ func (ce *EchoController) UpdateTaskController(c echo.Context) error {
 // @Tags Task
 // @Accept json
 // @Produce json
-// @Param	username	path	string	true	"Username"
 // @Param	activity_name	path	string	true	"Activity Name"
 // @Param	id	path	string	true	"ID task"
-// @Success	200	{object} model.TaskDeleted
-// @Failure 400 {object} model.JWTNotFound
-// @Failure 401 {object} model.NoAccess
-// @Failure 404 {object} model.UserNotFound
-// @Failure 404 {object} model.ActivityNotFound
-// @Failure 404 {object} model.TaskNotFound
-// @Failure 404 {object} model.FailUpdateTask
-// @Router /{username}/activities/{activity_name}/tasks/{id} [DELETE]
+// @Success	200	{string} string "ok"
+// @Failure 400 {string} string "bad request"
+// @Failure 401 {string} string "no access"
+// @Failure 404 {string} string "not found"
+// @Router /activities/{activity_name}/tasks/{id} [DELETE]
 func (ce *EchoController) DeleteTaskController(c echo.Context) error {
-	username := c.Param("username")
+	username := ce.svc.ClaimToken(c.Get("user").(*jwt.Token))
+
 	users, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
@@ -287,18 +277,16 @@ func (ce *EchoController) DeleteTaskController(c echo.Context) error {
 // @Tags Task
 // @Accept json
 // @Produce json
-// @Param	username	path	string	true	"Username"
 // @Param	activity_name	path	string	true	"Activity Name"
 // @Param	id	path	string	true	"ID task"
-// @Success	200	{object} model.TaskCompleted
-// @Failure 400 {object} model.JWTNotFound
-// @Failure 401 {object} model.NoAccess
-// @Failure 404 {object} model.UserNotFound
-// @Failure 404 {object} model.ActivityNotFound
-// @Failure 404 {object} model.TaskNotFound
-// @Router /{username}/activities/{activity_name}/tasks/{id}/complete [PUT]
+// @Success	200	{string} string "ok"
+// @Failure 400 {string} string "bad request"
+// @Failure 401 {string} string "no access"
+// @Failure 404 {string} string "not found"
+// @Router /activities/{activity_name}/tasks/{id}/complete [PUT]
 func (ce *EchoController) CompleteTaskController(c echo.Context) error {
-	username := c.Param("username")
+	username := ce.svc.ClaimToken(c.Get("user").(*jwt.Token))
+
 	users, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
@@ -343,7 +331,7 @@ func (ce *EchoController) CompleteTaskController(c echo.Context) error {
 
 	return c.JSON(200, map[string]interface{}{
 		"messages": "task completed",
-		"activity": result,
+		"task":     result,
 	})
 }
 
@@ -353,18 +341,16 @@ func (ce *EchoController) CompleteTaskController(c echo.Context) error {
 // @Tags Task
 // @Accept json
 // @Produce json
-// @Param	username	path	string	true	"Username"
 // @Param	activity_name	path	string	true	"Activity Name"
 // @Param	id	path	string	true	"ID task"
-// @Success	200	{object} model.TaskUndo
-// @Failure 400 {object} model.JWTNotFound
-// @Failure 401 {object} model.NoAccess
-// @Failure 404 {object} model.UserNotFound
-// @Failure 404 {object} model.ActivityNotFound
-// @Failure 404 {object} model.TaskNotFound
-// @Router /{username}/activities/{activity_name}/tasks/{id}/complete [DELETE]
+// @Success	200	{string} string "ok"
+// @Failure 400 {string} string "bad request"
+// @Failure 401 {string} string "no access"
+// @Failure 404 {string} string "not found"
+// @Router /activities/{activity_name}/tasks/{id}/complete [DELETE]
 func (ce *EchoController) UndoCompletedTaskController(c echo.Context) error {
-	username := c.Param("username")
+	username := ce.svc.ClaimToken(c.Get("user").(*jwt.Token))
+
 	users, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
 		return c.JSON(404, map[string]interface{}{
@@ -409,6 +395,6 @@ func (ce *EchoController) UndoCompletedTaskController(c echo.Context) error {
 
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success undo completed task",
-		"activity": result,
+		"task":     result,
 	})
 }

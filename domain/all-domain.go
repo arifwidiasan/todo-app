@@ -1,6 +1,9 @@
 package domain
 
-import "github.com/arifwidiasan/todo-app/model"
+import (
+	"github.com/arifwidiasan/todo-app/model"
+	"github.com/golang-jwt/jwt"
+)
 
 type AdapterRepository interface {
 	CreateUsers(user model.User) error
@@ -34,7 +37,7 @@ type AdapterRepository interface {
 }
 
 type AdapterService interface {
-	CheckAuth(id, idToken int) error
+	ClaimToken(bearer *jwt.Token) string
 
 	CreateUserService(user model.User) error
 	GetUserByIDService(id int) (model.User, error)

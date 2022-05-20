@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/arifwidiasan/todo-app/model"
+	"github.com/golang-jwt/jwt"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -9,8 +10,9 @@ type MockSvc struct {
 	mock.Mock
 }
 
-func (m *MockSvc) CheckAuth(id, idToken int) error {
-	return nil
+func (m *MockSvc) ClaimToken(bearer *jwt.Token) string {
+	ret := m.Called(bearer)
+	return ret.String(0)
 }
 
 func (m *MockSvc) CreateUserService(user model.User) error {

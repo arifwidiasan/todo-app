@@ -3,6 +3,8 @@ package handler
 import (
 	"net/http"
 
+	"github.com/golang-jwt/jwt"
+
 	"github.com/arifwidiasan/todo-app/model"
 	"github.com/labstack/echo/v4"
 )
@@ -13,9 +15,9 @@ import (
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param	user	body	model.CreateUser	true	"JSON username, user_email, and user_pass"
-// @Success	201	{object} model.CreateUser
-// @Failure 500 {object} model.FailCreateUser "Internal Server Error"
+// @Param	user	body	docs.CreateUser	true	"JSON username, user_email, and user_pass"
+// @Success	201 {string} string "created"
+// @Failure 500 {string} string "error insert user"
 // @Router /register [POST]
 func (ce *EchoController) CreateUserController(c echo.Context) error {
 	user := model.User{}
@@ -30,7 +32,7 @@ func (ce *EchoController) CreateUserController(c echo.Context) error {
 
 	return c.JSON(201, map[string]interface{}{
 		"messages": "success",
-		"users":    user,
+		"user":     user,
 	})
 }
 
@@ -40,13 +42,11 @@ func (ce *EchoController) CreateUserController(c echo.Context) error {
 // @Tags User
 // @Accept json
 // @Produce json
-// @Param	username	path	string	true	"Username"
-// @Success	200	{object} model.UserFound "success"
-// @Failure 400 {object} model.JWTNotFound
-// @Failure 404 {object} model.UserNotFound
-// @Router /{username} [GET]
+// @Success	200	{string} string ok
+// @Failure 404 {string} string "error not found"
+// @Router / [GET]
 func (ce *EchoController) GetUserController(c echo.Context) error {
-	username := c.Param("username")
+	username := ce.svc.ClaimToken(c.Get("user").(*jwt.Token))
 
 	res, err := ce.svc.GetUserByUsernameService(username)
 	if err != nil {
@@ -57,7 +57,7 @@ func (ce *EchoController) GetUserController(c echo.Context) error {
 
 	return c.JSON(200, map[string]interface{}{
 		"messages": "success",
-		"users":    res,
+		"user":     res,
 	})
 }
 
@@ -68,9 +68,9 @@ func (ce *EchoController) GetUserController(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param	user	body	model.LoginRequest	true	"JSON username and user_pass"
-// @Success	200	{object} model.SuccessLoginUser
-// @Failure 401 {object} model.FailCreateUser "unauthorized"
-// @Failure 500 {object} model.FailCreateUser "internal server error"
+// @Success	200	{string} string "ok"
+// @Failure 401 {string} string "unauthorized"
+// @Failure 500 {string} string "internal server error"
 // @Router /login [POST]
 func (ce *EchoController) LoginUserController(c echo.Context) error {
 	userLogin := model.LoginRequest{}

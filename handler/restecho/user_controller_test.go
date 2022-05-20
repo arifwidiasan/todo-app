@@ -53,48 +53,6 @@ func TestCreateUserControllerNotValid(t *testing.T) {
 	})
 }
 
-func TestGetUserControllerValid(t *testing.T) {
-	svc := MockSvc{}
-
-	svc.On("GetUserByUsernameService", mock.Anything).Return(nil).Once()
-
-	usrController := EchoController{
-		svc: &svc,
-	}
-
-	e := echo.New()
-
-	t.Run("success", func(t *testing.T) {
-		r := httptest.NewRequest("GET", "/:username", nil)
-		w := httptest.NewRecorder()
-		echoContext := e.NewContext(r, w)
-
-		usrController.GetUserController(echoContext)
-		assert.Equal(t, 200, w.Result().StatusCode)
-	})
-}
-
-func TestGetUserControllerNotValid(t *testing.T) {
-	svc := MockSvc{}
-
-	svc.On("GetUserByUsernameService", mock.Anything).Return(errors.New("new")).Once()
-
-	usrController := EchoController{
-		svc: &svc,
-	}
-
-	e := echo.New()
-
-	t.Run("fail", func(t *testing.T) {
-		r := httptest.NewRequest("GET", "/:username", nil)
-		w := httptest.NewRecorder()
-		echoContext := e.NewContext(r, w)
-
-		usrController.GetUserController(echoContext)
-		assert.Equal(t, 404, w.Result().StatusCode)
-	})
-}
-
 func TestLoginUserControllerValid(t *testing.T) {
 	svc := MockSvc{}
 
