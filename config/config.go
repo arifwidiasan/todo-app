@@ -13,8 +13,6 @@ type Config struct {
 }
 
 func InitConfiguration() Config {
-	// logic dapatin env
-	// file(.env, env.yaml, env.json,...), system env
 
 	return Config{
 		SERVER_ADDRESS: GetOrDefault("SERVER_ADDRESS", "0.0.0.0:8080"),
@@ -32,7 +30,6 @@ func GetOrDefault(envKey, defaultValue string) string {
 	if val, exist := os.LookupEnv(envKey); exist {
 		return val
 	}
-	// kalau ada, return valuenya
-	// kalau gaada, return defaultValuenya
+
 	return defaultValue
 }

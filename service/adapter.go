@@ -1,10 +1,11 @@
 package service
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/arifwidiasan/todo-app/config"
 	"github.com/arifwidiasan/todo-app/domain"
+	"github.com/golang-jwt/jwt"
 )
 
 type svcUser struct {
@@ -12,12 +13,11 @@ type svcUser struct {
 	repo domain.AdapterRepository
 }
 
-func (s *svcUser) CheckAuth(id, idToken int) error {
-	if id != idToken {
-		return errors.New("error")
-	}
+func (s *svcUser) ClaimToken(bearer *jwt.Token) string {
+	claim := bearer.Claims.(jwt.MapClaims)
+	username := fmt.Sprintf("%v", claim["username"])
 
-	return nil
+	return username
 }
 
 func NewServiceUser(repo domain.AdapterRepository, c config.Config) domain.AdapterService {

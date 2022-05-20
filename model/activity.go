@@ -1,14 +1,11 @@
 package model
 
-import "gorm.io/gorm"
-
 type Activity struct {
-	*gorm.Model
-
+	ID            uint     `gorm:"primaryKey;autoIncrement" json:"id"`
 	Activity_Name string   `gorm:"unique" json:"activity_name"`
 	Archived      bool     `json:"archived"`
 	Accesses      []Access `gorm:"ForeignKey:ActivityID" json:"accesses"`
-	Tasks         []Task   `gorm:"ForeignKey:ActivityID" json:"Tasks"`
+	Tasks         []Task   `gorm:"ForeignKey:ActivityID" json:"tasks"`
 }
 
 func (a *Activity) Archive() {
