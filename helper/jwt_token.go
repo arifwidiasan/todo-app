@@ -8,9 +8,7 @@ import (
 
 func CreateToken(id int, username, secret string) (string, error) {
 	claims := jwt.MapClaims{}
-	claims["exp"] = time.Now().Add((24 * time.Hour)).Unix() // kapan token gabisa dipake
-	// claims["iat"] = time.Now().Unix()                         // kapan token dibuat
-	// claims["nbf"] = time.Now().Add((25 * time.Second)).Unix() // kapan token bisa digunakan == iat
+	claims["exp"] = time.Now().Add((24 * time.Hour)).Unix()
 	claims["username"] = username
 	claims["id"] = id
 

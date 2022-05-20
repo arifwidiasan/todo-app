@@ -1,105 +1,18 @@
 basePath: /v1
 definitions:
-  gorm.DeletedAt:
-    properties:
-      time:
-        type: string
-      valid:
-        description: Valid is true if Time is not NULL
-        type: boolean
-    type: object
-  model.Access:
-    properties:
-      access_owner:
-        type: boolean
-      activity_id:
-        type: integer
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
-      id:
-        type: integer
-      updatedAt:
-        type: string
-      user_id:
-        type: integer
-    type: object
-  model.Activity:
-    properties:
-      Tasks:
-        items:
-          $ref: '#/definitions/model.Task'
-        type: array
-      accesses:
-        items:
-          $ref: '#/definitions/model.Access'
-        type: array
-      activity_name:
-        type: string
-      archived:
-        type: boolean
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
-      id:
-        type: integer
-      updatedAt:
-        type: string
-    type: object
-  model.ActivityArchived:
-    properties:
-      messages:
-        example: activity archived
-        type: string
-    type: object
-  model.ActivityDeleted:
-    properties:
-      messages:
-        example: activity deleted
-        type: string
-    type: object
-  model.ActivityNotFound:
-    properties:
-      messages:
-        example: activity not found
-        type: string
-    type: object
-  model.ActivityRestored:
-    properties:
-      messages:
-        example: activity is restored
-        type: string
-    type: object
-  model.ActivityUpdated:
-    properties:
-      activity_name:
-        example: Kegiatan 1
-        type: string
-      messages:
-        example: activity edited
-        type: string
-    type: object
-  model.AddYourself:
-    properties:
-      messages:
-        example: can't add yourself
-        type: string
-    type: object
-  model.CreateAccess:
+  docs.CreateAccess:
     properties:
       username:
         example: arifwidiasan
         type: string
     type: object
-  model.CreateActivity:
+  docs.CreateActivity:
     properties:
       activity_name:
         example: Kegiatan 1
         type: string
     type: object
-  model.CreateTask:
+  docs.CreateTask:
     properties:
       task_name:
         example: buat dokumentasi
@@ -108,7 +21,7 @@ definitions:
         example: "1"
         type: string
     type: object
-  model.CreateUser:
+  docs.CreateUser:
     properties:
       user_email:
         example: arifw.subagio17@gmail.com
@@ -120,57 +33,9 @@ definitions:
         example: arifwidiasan
         type: string
     type: object
-  model.FailCreateAccess:
-    properties:
-      messages:
-        example: error insert access
-        type: string
-    type: object
-  model.FailCreateActivity:
-    properties:
-      messages:
-        example: error insert activity
-        type: string
-    type: object
-  model.FailCreateTask:
-    properties:
-      messages:
-        example: error insert task
-        type: string
-    type: object
-  model.FailCreateUser:
-    properties:
-      messages:
-        example: error insert user
-        type: string
-    type: object
-  model.FailDeleteAccess:
-    properties:
-      messages:
-        example: error delete because you're the owner or no access found
-        type: string
-    type: object
-  model.FailUpdateActivity:
-    properties:
-      messages:
-        example: no id found or no change
-        type: string
-    type: object
-  model.FailUpdateTask:
-    properties:
-      messages:
-        example: task not found or no change
-        type: string
-    type: object
-  model.JWTNotFound:
-    properties:
-      messages:
-        example: missing or malformed jwt
-        type: string
-    type: object
   model.ListAccess:
     properties:
-      access_Owner:
+      access_owner:
         example: true
         type: boolean
       username:
@@ -184,145 +49,6 @@ definitions:
         type: string
       username:
         example: arifwidiasan
-        type: string
-    type: object
-  model.NoAccess:
-    properties:
-      messages:
-        example: you have no access to this activity
-        type: string
-    type: object
-  model.NoAccessOwner:
-    properties:
-      messages:
-        example: you dont have access to this activity or not owner
-        type: string
-    type: object
-  model.SuccessCreateAccess:
-    properties:
-      activity_name:
-        example: Kegiatan 1
-        type: string
-      messages:
-        example: success add another user to this activity
-        type: string
-      username:
-        example: arifwidiasan
-        type: string
-    type: object
-  model.SuccessCreateTask:
-    properties:
-      activity_name:
-        example: Kegiatan 1
-        type: string
-      messages:
-        example: success add task to this activity
-        type: string
-      task_name:
-        example: buat dokumentasi
-        type: string
-    type: object
-  model.SuccessDeleteAccess:
-    properties:
-      activity_name:
-        example: Kegiatan 1
-        type: string
-      messages:
-        example: success delete user to this activity
-        type: string
-      username:
-        example: arifwidiasan
-        type: string
-    type: object
-  model.SuccessLoginUser:
-    properties:
-      messages:
-        example: success
-        type: string
-      token:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTI3ODI1OTIsImlkIjoxLCJ1c2VybmFtZSI6ImFyaWZ3aWRpYXNhbiJ9.Cve64349wPdD4HALRWnLqTzH4ByN20SRT_Zw-Vmrrm4
-        type: string
-    type: object
-  model.SuccessRemoveAccess:
-    properties:
-      activity_name:
-        example: Kegiatan 1
-        type: string
-      messages:
-        example: success delete access, you can't access this activity anymore
-        type: string
-    type: object
-  model.Task:
-    properties:
-      activity_id:
-        type: integer
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
-      id:
-        type: integer
-      task_done:
-        type: boolean
-      task_name:
-        type: string
-      task_priority:
-        type: string
-      updatedAt:
-        type: string
-    type: object
-  model.TaskCompleted:
-    properties:
-      messages:
-        example: task completed
-        type: string
-      tasks:
-        $ref: '#/definitions/model.Task'
-    type: object
-  model.TaskDeleted:
-    properties:
-      messages:
-        example: task deleted
-        type: string
-    type: object
-  model.TaskNotFound:
-    properties:
-      messages:
-        example: task not found
-        type: string
-    type: object
-  model.TaskUndo:
-    properties:
-      messages:
-        example: success undo completed task
-        type: string
-      tasks:
-        $ref: '#/definitions/model.Task'
-    type: object
-  model.TaskUpdated:
-    properties:
-      messages:
-        example: success update task
-        type: string
-      tasks:
-        $ref: '#/definitions/model.Task'
-    type: object
-  model.UserFound:
-    properties:
-      user_email:
-        example: arifw.subagio17@gmail.com
-        type: string
-      user_pass:
-        example: rahasia87
-        type: string
-      username:
-        example: arifwidiasan
-        type: string
-    type: object
-  model.UserNotFound:
-    properties:
-      messages:
-        example: username not found
         type: string
     type: object
 host: localhost:8080
@@ -339,61 +65,45 @@ info:
   title: To-do List App API
   version: "2.0"
 paths:
-  /{username}:
+  /:
     get:
       consumes:
       - application/json
       description: get a user information by username.
-      parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/model.UserFound'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/model.JWTNotFound'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/model.UserNotFound'
-      summary: Get a User.
-      tags:
-      - User
-  /{username}/activities:
-    get:
-      consumes:
-      - application/json
-      description: get all activity by user.
-      parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Activity'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "404":
-          description: Not Found
+          description: error not found
           schema:
-            $ref: '#/definitions/model.UserNotFound'
+            type: string
+      summary: Get a User.
+      tags:
+      - User
+  /activities:
+    get:
+      consumes:
+      - application/json
+      description: get all activity by user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: bad request
+          schema:
+            type: string
+        "404":
+          description: not found
+          schema:
+            type: string
       summary: Get All Activity.
       tags:
       - Activity
@@ -402,50 +112,40 @@ paths:
       - application/json
       description: create new activity for user.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: JSON
         in: body
         name: activity
         required: true
         schema:
-          $ref: '#/definitions/model.CreateActivity'
+          $ref: '#/definitions/docs.CreateActivity'
       produces:
       - application/json
       responses:
         "201":
-          description: Created
+          description: created
           schema:
-            $ref: '#/definitions/model.CreateActivity'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.UserNotFound'
+            type: string
         "500":
-          description: Internal Server Error
+          description: internal server error
           schema:
-            $ref: '#/definitions/model.FailCreateActivity'
+            type: string
       summary: Create New Activity.
       tags:
       - Activity
-  /{username}/activities/{activity_name}:
+  /activities/{activity_name}:
     delete:
       consumes:
       - application/json
       description: Delete a activity by activity name.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -455,21 +155,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.ActivityDeleted'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccessOwner'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.ActivityNotFound'
+            type: string
       summary: Delete a Activity.
       tags:
       - Activity
@@ -478,11 +178,6 @@ paths:
       - application/json
       description: get a activity by activity name.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -492,21 +187,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.Activity'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.ActivityNotFound'
+            type: string
       summary: Get a Activity.
       tags:
       - Activity
@@ -515,11 +210,6 @@ paths:
       - application/json
       description: update a activity by activity name.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -530,40 +220,35 @@ paths:
         name: activity
         required: true
         schema:
-          $ref: '#/definitions/model.CreateActivity'
+          $ref: '#/definitions/docs.CreateActivity'
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.ActivityUpdated'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.FailUpdateActivity'
+            type: string
       summary: Update a Activity.
       tags:
       - Activity
-  /{username}/activities/{activity_name}/archive:
+  /activities/{activity_name}/archive:
     delete:
       consumes:
       - application/json
       description: restore a activity by activity name.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -573,21 +258,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.ActivityRestored'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccessOwner'
+            type: string
         "404":
-          description: Not Found
+          description: not dound
           schema:
-            $ref: '#/definitions/model.FailUpdateActivity'
+            type: string
       summary: Restore a Activity.
       tags:
       - Activity
@@ -596,11 +281,6 @@ paths:
       - application/json
       description: archive a activity by activity name.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -610,35 +290,30 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.ActivityArchived'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccessOwner'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.FailUpdateActivity'
+            type: string
       summary: Archive a Activity.
       tags:
       - Activity
-  /{username}/activities/{activity_name}/manage:
+  /activities/{activity_name}/manage:
     delete:
       consumes:
       - application/json
       description: delete access another user to activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -649,26 +324,26 @@ paths:
         name: access
         required: true
         schema:
-          $ref: '#/definitions/model.CreateAccess'
+          $ref: '#/definitions/docs.CreateAccess'
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.SuccessDeleteAccess'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: unauthorized
           schema:
-            $ref: '#/definitions/model.NoAccessOwner'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.FailDeleteAccess'
+            type: string
       summary: Delete Access Another User to Activity.
       tags:
       - Access
@@ -677,11 +352,6 @@ paths:
       - application/json
       description: get list access user to activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -695,17 +365,17 @@ paths:
           schema:
             $ref: '#/definitions/model.ListAccess'
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: unauthorized
           schema:
-            $ref: '#/definitions/model.NoAccessOwner'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.ActivityNotFound'
+            type: string
       summary: Get List Access User to Activity.
       tags:
       - Access
@@ -714,11 +384,6 @@ paths:
       - application/json
       description: add access user to activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -729,44 +394,39 @@ paths:
         name: access
         required: true
         schema:
-          $ref: '#/definitions/model.CreateAccess'
+          $ref: '#/definitions/docs.CreateAccess'
       produces:
       - application/json
       responses:
         "201":
-          description: Created
+          description: created
           schema:
-            $ref: '#/definitions/model.SuccessCreateAccess'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.AddYourself'
+            type: string
         "401":
-          description: Unauthorized
+          description: unauthorized
           schema:
-            $ref: '#/definitions/model.NoAccessOwner'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.ActivityNotFound'
+            type: string
         "500":
-          description: Internal Server Error
+          description: internal server error
           schema:
-            $ref: '#/definitions/model.FailCreateAccess'
+            type: string
       summary: Add Access User to Activity.
       tags:
       - Access
-  /{username}/activities/{activity_name}/remove:
+  /activities/{activity_name}/remove:
     delete:
       consumes:
       - application/json
       description: remove access user from activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -776,35 +436,30 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.SuccessRemoveAccess'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: unauthorized
           schema:
-            $ref: '#/definitions/model.NoAccessOwner'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.FailDeleteAccess'
+            type: string
       summary: Remove Access User from Activity.
       tags:
       - Access
-  /{username}/activities/{activity_name}/tasks:
+  /activities/{activity_name}/tasks:
     get:
       consumes:
       - application/json
       description: get all task in an activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -814,21 +469,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.Task'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.ActivityNotFound'
+            type: string
       summary: Get All Task in an Activity.
       tags:
       - Task
@@ -837,11 +492,6 @@ paths:
       - application/json
       description: create task of an activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -852,44 +502,39 @@ paths:
         name: task
         required: true
         schema:
-          $ref: '#/definitions/model.CreateTask'
+          $ref: '#/definitions/docs.CreateTask'
       produces:
       - application/json
       responses:
         "201":
-          description: Created
+          description: created
           schema:
-            $ref: '#/definitions/model.SuccessCreateTask'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.ActivityNotFound'
+            type: string
         "500":
-          description: Internal Server Error
+          description: internal server error
           schema:
-            $ref: '#/definitions/model.FailCreateTask'
+            type: string
       summary: Create Task of an Activity.
       tags:
       - Task
-  /{username}/activities/{activity_name}/tasks/{id}:
+  /activities/{activity_name}/tasks/{id}:
     delete:
       consumes:
       - application/json
       description: delete a task in an activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -904,21 +549,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.TaskDeleted'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.FailUpdateTask'
+            type: string
       summary: Delete a Task in an Activity.
       tags:
       - Task
@@ -927,11 +572,6 @@ paths:
       - application/json
       description: get a task in an activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -946,21 +586,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.Task'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.TaskNotFound'
+            type: string
       summary: Get a Task in an Activity.
       tags:
       - Task
@@ -969,11 +609,6 @@ paths:
       - application/json
       description: update a task in an activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -989,40 +624,35 @@ paths:
         name: task
         required: true
         schema:
-          $ref: '#/definitions/model.CreateTask'
+          $ref: '#/definitions/docs.CreateTask'
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.TaskUpdated'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.FailUpdateTask'
+            type: string
       summary: Update a Task in an Activity.
       tags:
       - Task
-  /{username}/activities/{activity_name}/tasks/{id}/complete:
+  /activities/{activity_name}/tasks/{id}/complete:
     delete:
       consumes:
       - application/json
       description: undo a completed task in an activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -1037,21 +667,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.TaskUndo'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.TaskNotFound'
+            type: string
       summary: Undo a Completed Task in an Activity.
       tags:
       - Task
@@ -1060,11 +690,6 @@ paths:
       - application/json
       description: complete a task in an activity.
       parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       - description: Activity Name
         in: path
         name: activity_name
@@ -1079,50 +704,44 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.TaskCompleted'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "401":
-          description: Unauthorized
+          description: no access
           schema:
-            $ref: '#/definitions/model.NoAccess'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.TaskNotFound'
+            type: string
       summary: Complete a Task in an Activity.
       tags:
       - Task
-  /{username}/activities/archives:
+  /activities/archives:
     get:
       consumes:
       - application/json
       description: get all archived activity by user.
-      parameters:
-      - description: Username
-        in: path
-        name: username
-        required: true
-        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.Activity'
+            type: string
         "400":
-          description: Bad Request
+          description: bad request
           schema:
-            $ref: '#/definitions/model.JWTNotFound'
+            type: string
         "404":
-          description: Not Found
+          description: not found
           schema:
-            $ref: '#/definitions/model.UserNotFound'
+            type: string
       summary: Get All Archived Activity.
       tags:
       - Activity
@@ -1142,17 +761,17 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
           schema:
-            $ref: '#/definitions/model.SuccessLoginUser'
+            type: string
         "401":
           description: unauthorized
           schema:
-            $ref: '#/definitions/model.FailCreateUser'
+            type: string
         "500":
           description: internal server error
           schema:
-            $ref: '#/definitions/model.FailCreateUser'
+            type: string
       summary: Login User.
       tags:
       - User
@@ -1167,18 +786,18 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/model.CreateUser'
+          $ref: '#/definitions/docs.CreateUser'
       produces:
       - application/json
       responses:
         "201":
-          description: Created
+          description: created
           schema:
-            $ref: '#/definitions/model.CreateUser'
+            type: string
         "500":
-          description: Internal Server Error
+          description: error insert user
           schema:
-            $ref: '#/definitions/model.FailCreateUser'
+            type: string
       summary: Create/Register New User.
       tags:
       - User

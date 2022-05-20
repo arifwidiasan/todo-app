@@ -7,8 +7,6 @@ import (
 	"github.com/arifwidiasan/todo-app/config"
 	"github.com/arifwidiasan/todo-app/model"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/gorm"
-	//"github.com/stretchr/testify/mock"
 )
 
 func TestCreateActivityService(t *testing.T) {
@@ -108,7 +106,7 @@ func TestReplaceActivityName(t *testing.T) {
 			svc := NewServiceUser(&repo, config.Config{})
 			res := svc.ReplaceActivityName(v.user_id, model.Activity{})
 			if v.noError {
-				assert.Equal(t, res, model.Activity{Model: (*gorm.Model)(nil), Activity_Name: "-1", Archived: false, Accesses: []model.Access(nil), Tasks: []model.Task(nil)})
+				assert.Equal(t, res, model.Activity(model.Activity{ID: 0x0, Activity_Name: "-1", Archived: false, Accesses: []model.Access(nil), Tasks: []model.Task(nil)}))
 			}
 		})
 	}
