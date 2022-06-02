@@ -2,6 +2,7 @@ version: "2.1"
 services:
   be_db_app:
       image: "mysql:latest"
+      restart: always
       ports:
         - "3306:3306"
       environment:
